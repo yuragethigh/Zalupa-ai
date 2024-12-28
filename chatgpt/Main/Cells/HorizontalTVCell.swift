@@ -100,7 +100,7 @@ final class HorizontalTVCell: UITableViewCell {
 extension HorizontalTVCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedModel = models[indexPath.row % models.count]
-        delegate?.collectionTableViewCell(self, didSelectItem: selectedModel)
+        delegate?.collectionTableViewCell(didSelectItem: selectedModel)
     }
 }
 

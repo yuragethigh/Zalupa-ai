@@ -9,6 +9,7 @@ import Foundation
 
 protocol CollectionCellConfig {
     var title: String { get }
+    var name: String { get }
     var description: String { get }
     var imageDefault: URL? { get }
     var imageLocked: URL? { get }

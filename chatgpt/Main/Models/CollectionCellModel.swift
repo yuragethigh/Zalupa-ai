@@ -10,6 +10,7 @@ import Foundation
 struct CollectionCellModel: CollectionCellConfig, Decodable {
     
     let title: String
+    let name: String
     let description: String
     let imageDefault: URL?
     let imageLocked: URL?
@@ -20,6 +21,7 @@ struct CollectionCellModel: CollectionCellConfig, Decodable {
     
     init(
         title: String,
+        name: String,
         description: String,
         imageDefault: String,
         imageLocked: String,
@@ -29,6 +31,7 @@ struct CollectionCellModel: CollectionCellConfig, Decodable {
         clues: [Clues]
     ) {
         self.title = title
+        self.name = name
         self.description = description
         self.imageDefault = imageDefault.asURL
         self.imageLocked = imageLocked.asURL

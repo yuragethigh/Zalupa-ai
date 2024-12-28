@@ -37,6 +37,8 @@
 		5BAE8D9A2D1FE03300FA8551 /* MainTVSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE8D992D1FE03200FA8551 /* MainTVSection.swift */; };
 		5BAE8D9C2D201BDA00FA8551 /* UserDefaultsWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE8D9B2D201BCA00FA8551 /* UserDefaultsWrapper.swift */; };
 		5BAE8D9F2D201C2400FA8551 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE8D9E2D201C1C00FA8551 /* Preferences.swift */; };
+		5BAE8DA12D202DE800FA8551 /* ListTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE8DA02D202DE700FA8551 /* ListTVCell.swift */; };
+		5BAE8DA32D20354F00FA8551 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE8DA22D20354C00FA8551 /* Cell.swift */; };
 		5BB220CD2D1EFE6F00AC48EA /* MainModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB220CC2D1EFE6E00AC48EA /* MainModuleFactory.swift */; };
 		5BB220DA2D1F095400AC48EA /* UIBarButtonItem + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB220D92D1F095400AC48EA /* UIBarButtonItem + Extension.swift */; };
 		5BB3F6182D1EAF080098C6DE /* ChatListSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3F6172D1EAF050098C6DE /* ChatListSectionHeader.swift */; };
@@ -84,6 +86,8 @@
 		5BAE8D992D1FE03200FA8551 /* MainTVSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTVSection.swift; sourceTree = "<group>"; };
 		5BAE8D9B2D201BCA00FA8551 /* UserDefaultsWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsWrapper.swift; sourceTree = "<group>"; };
 		5BAE8D9E2D201C1C00FA8551 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		5BAE8DA02D202DE700FA8551 /* ListTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTVCell.swift; sourceTree = "<group>"; };
+		5BAE8DA22D20354C00FA8551 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
 		5BB220CC2D1EFE6E00AC48EA /* MainModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainModuleFactory.swift; sourceTree = "<group>"; };
 		5BB220D92D1F095400AC48EA /* UIBarButtonItem + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem + Extension.swift"; sourceTree = "<group>"; };
 		5BB3F6172D1EAF050098C6DE /* ChatListSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListSectionHeader.swift; sourceTree = "<group>"; };
@@ -208,7 +212,6 @@
 		5B9B36FC2D1AB54C003EE1BE /* TabBarController */ = {
 			isa = PBXGroup;
 			children = (
-				5BB220CC2D1EFE6E00AC48EA /* MainModuleFactory.swift */,
 				5B9B370A2D1AD18D003EE1BE /* TabbarRouter.swift */,
 				5B9B36F02D1AAB2B003EE1BE /* TabbarController.swift */,
 				5B9B37042D1AC6DF003EE1BE /* Subview */,
@@ -246,6 +249,8 @@
 		5B9B370E2D1AF221003EE1BE /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				5BAE8DA22D20354C00FA8551 /* Cell.swift */,
+				5BB220CC2D1EFE6E00AC48EA /* MainModuleFactory.swift */,
 				5BAE8D992D1FE03200FA8551 /* MainTVSection.swift */,
 				5BB3F6162D1EAEFD0098C6DE /* Subviews */,
 				5B0EE41E2D1DBB4B00DF482D /* FlowLayouts */,
@@ -262,6 +267,7 @@
 		5B9CA4DE2D1D6295001BDAB8 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				5BAE8DA02D202DE700FA8551 /* ListTVCell.swift */,
 				5BB3F6192D1EAF200098C6DE /* ChatListPlaceholderTVCell.swift */,
 				5B0EE41A2D1DB87900DF482D /* HorizontalTVCell.swift */,
 				5B0EE41C2D1DB9C900DF482D /* HorizontalCollectionViewCell.swift */,
@@ -418,6 +424,7 @@
 				5BAE8D9C2D201BDA00FA8551 /* UserDefaultsWrapper.swift in Sources */,
 				5B0EE40A2D1DA17F00DF482D /* HTTPErrorTypes.swift in Sources */,
 				5B0EE4122D1DB68700DF482D /* CollectionCellConfig.swift in Sources */,
+				5BAE8DA12D202DE800FA8551 /* ListTVCell.swift in Sources */,
 				5B0EE40F2D1DB66000DF482D /* SelectItemDelegate.swift in Sources */,
 				5BB3F61E2D1EB8560098C6DE /* UIFont + Extension.swift in Sources */,
 				5BAE8D9F2D201C2400FA8551 /* Preferences.swift in Sources */,
@@ -430,6 +437,7 @@
 				5BB3F62F2D1EE5E80098C6DE /* ChatViewController.swift in Sources */,
 				5B9B36F92D1AAB2B003EE1BE /* MainViewController.swift in Sources */,
 				5BAE8D962D1FDFE500FA8551 /* MainViewModel.swift in Sources */,
+				5BAE8DA32D20354F00FA8551 /* Cell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
