@@ -1,5 +1,5 @@
 //
-//  ListTVCell.swift
+//  ListModeTVCell.swift
 //  chatgpt
 //
 //  Created by Yuriy on 28.12.2024.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-final class ListTVCell: UITableViewCell {
+final class ListModeTVCell: UITableViewCell {
     
-    static let identifier = String(describing: ListTVCell.self)
+    static let identifier = String(describing: ListModeTVCell.self)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -95,7 +95,7 @@ final class ListTVCell: UITableViewCell {
     
     //MARK: - Public methods
     
-    func configure(_ items: CollectionCellConfig) {
+    func configure(_ items: AssistansConfiguration) {
         self.logoImageView.kf.setImage(with: items.imageAvatar)
         self.titleLabel.text = items.name
         self.subTitleLabel.text = items.title

@@ -7,146 +7,6 @@
 
 import UIKit
 import Combine
-import Kingfisher
-
-
-protocol TableDisplayStrategy {
-    func numberOfSections() -> Int
-    func numberOfRows(in section: Int) -> Int
-    func cellForRow(at indexPath: IndexPath, in tableView: UITableView) -> UITableViewCell
-    func heightForRow(at indexPath: IndexPath) -> CGFloat
-    func heightForHeader(in section: Int) -> CGFloat
-    func viewForHeader(in section: Int) -> UIView?
-}
-
-//MARK: - ListModeStrategy
-
-final class ListModeStrategy: TableDisplayStrategy {
-    private let viewModel: MainViewModel
-
-    init(viewModel: MainViewModel) {
-        self.viewModel = viewModel
-    }
-
-    func numberOfSections() -> Int {
-        return 1
-    }
-
-    func numberOfRows(in section: Int) -> Int {
-        return viewModel.extractItems.count
-    }
-
-    func cellForRow(at indexPath: IndexPath, in tableView: UITableView) -> UITableViewCell {
-        
-        
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: ListTVCell.identifier
-        ) as? ListTVCell else {
-            return UITableViewCell()
-        }
-        
-        let sectionItem = viewModel.extractItems[indexPath.row]
-        cell.configure(sectionItem)
-        
-        return cell
-    }
-
-    func heightForRow(at indexPath: IndexPath) -> CGFloat {
-        return 76
-    }
-
-    func heightForHeader(in section: Int) -> CGFloat {
-        return 0
-    }
-
-    func viewForHeader(in section: Int) -> UIView? {
-        return nil
-    }
-}
-
-
-//MARK: - SectionModeStrategy
-
-
-final class SectionModeStrategy: TableDisplayStrategy {
-    
-    private let viewModel: MainViewModel
-    private let isPremium: Bool
-    
-    init(viewModel: MainViewModel, isPremium: Bool) {
-        self.viewModel = viewModel
-        self.isPremium = isPremium
-    }
-
-    func numberOfSections() -> Int {
-        return viewModel.tableViewSections.count
-    }
-
-    func numberOfRows(in section: Int) -> Int {
-        
-        switch viewModel.tableViewSections[section] {
-        case .horizontalCV(_):
-            return 1
-        case .chatsList(let items):
-            return items.isEmpty ? 1 : items.count
-        }
-    }
-
-    func cellForRow(at indexPath: IndexPath, in tableView: UITableView) -> UITableViewCell {
-        
-        switch viewModel.tableViewSections[indexPath.section] {
-            
-        case .horizontalCV(let items):
-            
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: HorizontalTVCell.id
-            ) as? HorizontalTVCell else {
-                return UITableViewCell()
-            }
-            cell.configure(with: items, isPremium: isPremium)
-            return cell
-            
-        case .chatsList(let items):
-            
-            if items.isEmpty {
-                
-                guard let cell = tableView.dequeueReusableCell(
-                    withIdentifier: ChatListPlaceholderTVCell.id
-                ) as? ChatListPlaceholderTVCell else {
-                    return UITableViewCell()
-                }
-                return cell
-                
-            } else {
-                let cell = UITableViewCell()
-                cell.backgroundColor = .mainAccent
-                return cell
-            }
-        }
-    }
-
-    func heightForRow(at indexPath: IndexPath) -> CGFloat {
-        switch viewModel.tableViewSections[indexPath.section] {
-        case .horizontalCV(_): return 407 + 32 + 10
-        case .chatsList(let items): return items.isEmpty ? 232 : 76
-        }
-    }
-
-    func heightForHeader(in section: Int) -> CGFloat {
-        switch viewModel.tableViewSections[section] {
-        case .horizontalCV(_): return 0
-        case .chatsList(_): return 64
-        }
-    }
-
-    func viewForHeader(in section: Int) -> UIView? {
-        switch viewModel.tableViewSections[section] {
-        case .horizontalCV(_): return nil
-        case .chatsList(_): return ChatListSectionHeader()
-        }
-    }
-}
-
 
 
 final class MainViewController: UIViewController {
@@ -157,8 +17,6 @@ final class MainViewController: UIViewController {
     private let preferences: Preferences
     private var router: MainRouter?
 
-    private var tableDisplayStrategy: TableDisplayStrategy
-
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.separatorStyle = .none
@@ -168,9 +26,22 @@ final class MainViewController: UIViewController {
         if #available(iOS 15.0, *) {
             tableView.sectionHeaderTopPadding = 0
         }
-        tableView.register(HorizontalTVCell.self, forCellReuseIdentifier: HorizontalTVCell.id)
-        tableView.register(ChatListPlaceholderTVCell.self, forCellReuseIdentifier: ChatListPlaceholderTVCell.id)
-        tableView.register(ListTVCell.self, forCellReuseIdentifier: ListTVCell.identifier)
+        tableView.register(
+            HorizontalTVCell.self,
+            forCellReuseIdentifier: HorizontalTVCell.identifier
+        )
+        tableView.register(
+            ChatHistoryTVCell.self,
+            forCellReuseIdentifier: ChatHistoryTVCell.identifier
+        )
+        tableView.register(
+            ChatHistoryPlaceholderTVCell.self,
+            forCellReuseIdentifier: ChatHistoryPlaceholderTVCell.identifier
+        )
+        tableView.register(
+            ListModeTVCell.self,
+            forCellReuseIdentifier: ListModeTVCell.identifier
+        )
         return tableView
     }()
 
@@ -181,9 +52,6 @@ final class MainViewController: UIViewController {
     init(viewModel: MainViewModel, preferences: Preferences) {
         self.viewModel = viewModel
         self.preferences = preferences
-        self.tableDisplayStrategy = preferences.isListModeEnabled
-            ? ListModeStrategy(viewModel: viewModel)
-        : SectionModeStrategy(viewModel: viewModel, isPremium: false)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -192,15 +60,20 @@ final class MainViewController: UIViewController {
     }
 
     // MARK: - Lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .bg
 
-        setTVDelegate()
+        setupTVDelegate()
         setupTVConstraints()
         setupBindings()
         viewModel.fetchAssistants()
+        
+        //MOCK:
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.viewModel.updateHistoryChats(mock)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -208,54 +81,64 @@ final class MainViewController: UIViewController {
         navigationItem.title = "App Name"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.setColor(backgroud: .bg, hideLine: true)
-        navigationItem.rightBarButtonItem = setupRightBarButtom(isListMode: preferences.isListModeEnabled)
+        navigationItem.rightBarButtonItem = setupRightBarButtom(
+            isListMode: preferences.isListModeEnabled
+        )
     }
 
     // MARK: - Private Methods
-
-    private func setupTVConstraints() {
-        view.addSubview(tableView)
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-    }
-
-    private func setTVDelegate() {
-        tableView.dataSource = self
-        tableView.delegate = self
-    }
 
     private func setupRightBarButtom(isListMode: Bool) -> UIBarButtonItem {
         UIBarButtonItem(
             image: isListMode ? .categoryList : .category,
             target: self,
-            action: #selector(didTapAdd)
+            action: #selector(didTapRightBarButtot)
         )
     }
 
-    @objc private func didTapAdd() {
+    @objc private func didTapRightBarButtot() {
         preferences.isListModeEnabled.toggle()
-        updateTableDisplayStrategy()
-        navigationItem.rightBarButtonItem = setupRightBarButtom(isListMode: preferences.isListModeEnabled)
+        navigationItem.rightBarButtonItem = setupRightBarButtom(
+            isListMode: preferences.isListModeEnabled
+        )
     }
-
-    private func updateTableDisplayStrategy() {
-        tableDisplayStrategy = preferences.isListModeEnabled
-            ? ListModeStrategy(viewModel: viewModel)
-            : SectionModeStrategy(viewModel: viewModel, isPremium: isPremium)
-        tableView.reloadData()
+    
+    private var tableDisplayStrategy: TableDisplayStrategy {
+        preferences.isListModeEnabled ?
+        
+        ListModeStrategy(
+            assistans: viewModel.assistans,
+            selectItemDelegate: self
+        )
+        
+        :
+        
+        SectionModeStrategy(
+            assistans: viewModel.assistans,
+            historyChats: viewModel.historyChats,
+            isPremium: isPremium,
+            selectItemDelegate: self
+        )
     }
 
     private func setupBindings() {
-        viewModel.$tableViewSections
+        
+        viewModel.$assistans
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.tableView.reloadData()
+                guard let self else { return }
+                let section = IndexSet(integer: 0)
+                tableView.reloadSections(section, with: .fade)
             }.store(in: &cancellables)
-
+        
+        viewModel.$historyChats
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] items in
+                guard let self, !preferences.isListModeEnabled else { return }
+                let section = IndexSet(integer: 1)
+                tableView.reloadSections(section, with: .fade)
+            }.store(in: &cancellables)
+        
         $isPremium
             .dropFirst()
             .receive(on: DispatchQueue.main)
@@ -266,40 +149,119 @@ final class MainViewController: UIViewController {
         preferences.$isListModeEnabled
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.updateTableDisplayStrategy()
+                self?.tableView.reloadData()
             }.store(in: &cancellables)
     }
     
+    // MARK: - Public Methods
+    
     func configure(router: MainRouter) {
-           self.router = router
-       }
+        self.router = router
+    }
 }
+
+
+
 
 // MARK: - UITableViewDataSource / UITableViewDelegate
 
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
+        
         return tableDisplayStrategy.numberOfSections()
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int
+    ) -> Int {
+            
         return tableDisplayStrategy.numberOfRows(in: section)
     }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
+        
         return tableDisplayStrategy.cellForRow(at: indexPath, in: tableView)
     }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    
+    func tableView(
+        _ tableView: UITableView,
+        heightForRowAt indexPath: IndexPath
+    ) -> CGFloat {
+        
         return tableDisplayStrategy.heightForRow(at: indexPath)
     }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    
+    func tableView(
+        _ tableView: UITableView,
+        heightForHeaderInSection section: Int
+    ) -> CGFloat {
+        
         return tableDisplayStrategy.heightForHeader(in: section)
     }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    
+    func tableView(
+        _ tableView: UITableView,
+        viewForHeaderInSection section: Int
+    ) -> UIView? {
+        
         return tableDisplayStrategy.viewForHeader(in: section)
+    }
+    
+    func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath
+    ) {
+        
+        tableDisplayStrategy.didSelectRow(at: indexPath)
+    }
+    
+    func tableView(
+        _ tableView: UITableView,
+        canEditRowAt indexPath: IndexPath
+    ) -> Bool {
+        
+        return tableDisplayStrategy.canEditRow(at: indexPath)
+    }
+    
+    func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
+        
+        return tableDisplayStrategy.trailingSwipeActionsConfiguration(
+            forRowAt: indexPath,
+            in: tableView
+        ) { [weak self] indexPath, confirmed  in
+            self?.presentDeleteConfirmation(
+                at: indexPath,
+                completionHandler: confirmed
+            )
+        }
+    }
+    
+    private func presentDeleteConfirmation(
+        at indexPath: IndexPath,
+        completionHandler: @escaping (Bool) -> Void
+    ) {
+        
+        let alert = alertController(
+            title: nil,
+            message: "Этот чат будет удалён.",
+            preferredStyle: .actionSheet
+        ) { [weak self] completion in
+            
+            completionHandler(completion)
+            
+            if completion {
+                self?.viewModel.removeHistoryChat(indexPath.row)
+            }
+        }
+        
+        present(alert, animated: true, completion: nil)
     }
 }
 
@@ -307,15 +269,39 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
 
 //MARK: - SelectItemDelegate
 
-
 extension MainViewController: SelectItemDelegate {
-    func collectionTableViewCell(didSelectItem model: CollectionCellConfig) {
+    func collectionTableViewCell(didSelectItem model: AssistansConfiguration) {
         //TODO: handle selection cell
-        router?.presentChatView()
-        print("Selected item from collection: \(model)")
+        if !model.isPremium || isPremium {
+            router?.presentChatView()
+            print("Selected item from collection: \(model)")
+        } else {
+            //TODO: handle is not premium model
+        }
     }
 }
 
+
+//MARK: - Setups table view
+
+private extension MainViewController {
+    
+    private func setupTVConstraints() {
+        view.addSubview(tableView)
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+
+    private func setupTVDelegate() {
+        tableView.dataSource = self
+        tableView.delegate = self
+    }
+    
+}
 
 
 

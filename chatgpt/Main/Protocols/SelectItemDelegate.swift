@@ -8,5 +8,5 @@
 import Foundation
 
 protocol SelectItemDelegate: AnyObject {
-    func collectionTableViewCell(didSelectItem model: CollectionCellConfig)
+    func collectionTableViewCell(didSelectItem model: AssistansConfiguration)
 }

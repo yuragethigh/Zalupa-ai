@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CollectionCellModel: CollectionCellConfig, Decodable {
+struct CollectionCellModel: AssistansConfiguration, Decodable {
     
     let title: String
     let name: String

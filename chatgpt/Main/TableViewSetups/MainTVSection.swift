@@ -7,6 +7,6 @@
 
 import Foundation
 
-enum MainTVSection {
-    case horizontalCV([CollectionCellConfig]), chatsList([String])
+enum MainTVSection: CaseIterable {
+    case assistans, chatHistory
 }

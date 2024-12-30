@@ -13,4 +13,13 @@ final class ChatViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .red
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(close))
+    }
+    
+    @objc func close() {
+        dismiss(animated: true)
+    }
 }

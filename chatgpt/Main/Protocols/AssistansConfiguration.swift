@@ -1,5 +1,5 @@
 //
-//  CollectionCellConfig.swift
+//  AssistansConfiguration.swift
 //  chatgpt
 //
 //  Created by Yuriy on 26.12.2024.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol CollectionCellConfig {
+protocol AssistansConfiguration {
     var title: String { get }
     var name: String { get }
     var description: String { get }

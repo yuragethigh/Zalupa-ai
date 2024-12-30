@@ -9,7 +9,7 @@ import UIKit
 
 final class HorizontalTVCell: UITableViewCell {
     
-    static let id = String(describing: HorizontalTVCell.self)
+    static let identifier = String(describing: HorizontalTVCell.self)
     
     private let collectionView: UICollectionView = {
         let layout = CustomHorizontalFlowLayout()
@@ -31,7 +31,7 @@ final class HorizontalTVCell: UITableViewCell {
     }()
     
     private let multiplier = 20
-    private var models: [CollectionCellConfig]
+    private var models: [AssistansConfiguration]
     private var isPremium = false
     
     weak var delegate: SelectItemDelegate?
@@ -52,7 +52,7 @@ final class HorizontalTVCell: UITableViewCell {
     
     //MARK: - Public methods
     
-    func configure(with items: [CollectionCellConfig], isPremium: Bool) {
+    func configure(with items: [AssistansConfiguration], isPremium: Bool) {
         self.models = items
         self.isPremium = isPremium
         if !items.isEmpty {

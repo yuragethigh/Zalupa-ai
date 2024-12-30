@@ -1,5 +1,5 @@
 //
-//  ChatListPlaceholder.swift
+//  ChatHistoryPlaceholderTVCell.swift
 //  chatgpt
 //
 //  Created by Yuriy on 27.12.2024.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-final class ChatListPlaceholderTVCell: UITableViewCell {
+final class ChatHistoryPlaceholderTVCell: UITableViewCell {
     
-    static let id = String(describing: ChatListPlaceholderTVCell.self)
+    static let identifier = String(describing: ChatHistoryPlaceholderTVCell.self)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -84,6 +84,6 @@ final class ChatListPlaceholderTVCell: UITableViewCell {
 #if DEBUG
 @available(iOS 17.0, *)
 #Preview {
-    ChatListPlaceholderTVCell()
+    ChatHistoryPlaceholderTVCell()
 }
 #endif

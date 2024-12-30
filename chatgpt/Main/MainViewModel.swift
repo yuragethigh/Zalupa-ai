@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import UIKit
 
 final class MainViewModel {
     
@@ -18,10 +19,9 @@ final class MainViewModel {
         self.networkService = networkService
     }
     
-    @Published private(set) var tableViewSections: [MainTVSection] = [
-        .horizontalCV([]),
-        .chatsList([])
-    ]
+    @Published private(set) var assistans = [AssistansConfiguration]()
+    @Published private(set) var historyChats = [HistoryChatConfiguration]()
+    
     
     func fetchAssistants() {
         networkService.request(
@@ -37,25 +37,49 @@ final class MainViewModel {
             }
         } receiveValue: { [weak self] responseModel in
             guard let self else { return }
-            tableViewSections = self.tableViewSections.map { section in
-                switch section {
-                case .horizontalCV:
-                    return .horizontalCV(responseModel)
-                default:
-                    return section
-                }
-            }
+            updateAssistants(responseModel)
         }.store(in: &cancellables)
     }
-    
-    var extractItems: [CollectionCellConfig] {
-        tableViewSections.compactMap {
-            if case .horizontalCV(let items) = $0 {
-                return items
-            }
-            return nil
-        }.flatMap { $0 }
-    }
-
 }
+
+extension MainViewModel {
+    func updateHistoryChats(_ items: [HistoryChatConfiguration]) {
+        self.historyChats = items
+    }
+    
+    func updateAssistants(_ items: [AssistansConfiguration]) {
+        self.assistans = items
+    }
+    
+    func removeHistoryChat(_ item: Int) {
+        self.historyChats.remove(at: item)
+    }
+}
+
+
+struct HistoryCellModeLive: HistoryChatConfiguration {
+    let image: UIImage
+    let title: String
+    let subtitle: String
+}
+
+let mock = [
+    HistoryCellModeLive(
+        image: .m1,
+        title: "Title",
+        subtitle: "Subtitle"
+    ),
+    
+    HistoryCellModeLive(
+        image: .m2,
+        title: "Title",
+        subtitle: "Subtitle"
+    ),
+    
+    HistoryCellModeLive(
+        image: .m3,
+        title: "Title",
+        subtitle: "Subtitle"
+    ),
+]
 

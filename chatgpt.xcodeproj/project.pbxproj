@@ -14,12 +14,18 @@
 		5B0EE40A2D1DA17F00DF482D /* HTTPErrorTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0EE4092D1DA17E00DF482D /* HTTPErrorTypes.swift */; };
 		5B0EE40D2D1DA6F900DF482D /* String + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0EE40C2D1DA6F200DF482D /* String + Extension.swift */; };
 		5B0EE40F2D1DB66000DF482D /* SelectItemDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0EE40E2D1DB65900DF482D /* SelectItemDelegate.swift */; };
-		5B0EE4122D1DB68700DF482D /* CollectionCellConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0EE4112D1DB68600DF482D /* CollectionCellConfig.swift */; };
+		5B0EE4122D1DB68700DF482D /* AssistansConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0EE4112D1DB68600DF482D /* AssistansConfiguration.swift */; };
 		5B0EE4152D1DB6EF00DF482D /* Clues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0EE4142D1DB6EE00DF482D /* Clues.swift */; };
 		5B0EE4172D1DB70900DF482D /* CollectionCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0EE4162D1DB70800DF482D /* CollectionCellModel.swift */; };
 		5B0EE41B2D1DB87E00DF482D /* HorizontalTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0EE41A2D1DB87900DF482D /* HorizontalTVCell.swift */; };
 		5B0EE41D2D1DB9CC00DF482D /* HorizontalCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0EE41C2D1DB9C900DF482D /* HorizontalCollectionViewCell.swift */; };
 		5B0EE4202D1DBB5400DF482D /* CustomHorizontalFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0EE41F2D1DBB5300DF482D /* CustomHorizontalFlowLayout.swift */; };
+		5B1479BA2D235156008AB063 /* UIViewController + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1479B92D23514B008AB063 /* UIViewController + Extension.swift */; };
+		5B1479BD2D2352F7008AB063 /* ListModeStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1479BC2D2352F5008AB063 /* ListModeStrategy.swift */; };
+		5B1479BF2D23531F008AB063 /* SectionModeStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1479BE2D23531D008AB063 /* SectionModeStrategy.swift */; };
+		5B249B4C2D20ABC200BA27A7 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B249B4B2D20ABC100BA27A7 /* HTTPMethod.swift */; };
+		5B249B4F2D20B43D00BA27A7 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B249B4E2D20B43C00BA27A7 /* NetworkService.swift */; };
+		5B465C442D2327A90028C0BE /* HistoryChatConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B465C432D2327A80028C0BE /* HistoryChatConfiguration.swift */; };
 		5B9B36F32D1AAB2B003EE1BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B9B36EB2D1AAB2B003EE1BE /* Assets.xcassets */; };
 		5B9B36F52D1AAB2B003EE1BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B9B36EE2D1AAB2B003EE1BE /* LaunchScreen.storyboard */; };
 		5B9B36F62D1AAB2B003EE1BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9B36EA2D1AAB2B003EE1BE /* AppDelegate.swift */; };
@@ -32,17 +38,17 @@
 		5B9B37062D1AC75B003EE1BE /* SwiftUIView + extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9B37052D1AC74A003EE1BE /* SwiftUIView + extension.swift */; };
 		5B9B370B2D1AD197003EE1BE /* TabbarRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9B370A2D1AD18D003EE1BE /* TabbarRouter.swift */; };
 		5B9B370D2D1AE756003EE1BE /* UIViewGradient + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9B370C2D1AE74A003EE1BE /* UIViewGradient + Extension.swift */; };
+		5BA53B602D21CEB000B58932 /* TableDisplayStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA53B5F2D21CEAF00B58932 /* TableDisplayStrategy.swift */; };
 		5BAE8D962D1FDFE500FA8551 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE8D952D1FDFE300FA8551 /* MainViewModel.swift */; };
 		5BAE8D982D1FE00F00FA8551 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE8D972D1FE00E00FA8551 /* MainRouter.swift */; };
 		5BAE8D9A2D1FE03300FA8551 /* MainTVSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE8D992D1FE03200FA8551 /* MainTVSection.swift */; };
 		5BAE8D9C2D201BDA00FA8551 /* UserDefaultsWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE8D9B2D201BCA00FA8551 /* UserDefaultsWrapper.swift */; };
 		5BAE8D9F2D201C2400FA8551 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE8D9E2D201C1C00FA8551 /* Preferences.swift */; };
-		5BAE8DA12D202DE800FA8551 /* ListTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE8DA02D202DE700FA8551 /* ListTVCell.swift */; };
-		5BAE8DA32D20354F00FA8551 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE8DA22D20354C00FA8551 /* Cell.swift */; };
+		5BAE8DA12D202DE800FA8551 /* ListModeTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE8DA02D202DE700FA8551 /* ListModeTVCell.swift */; };
 		5BB220CD2D1EFE6F00AC48EA /* MainModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB220CC2D1EFE6E00AC48EA /* MainModuleFactory.swift */; };
 		5BB220DA2D1F095400AC48EA /* UIBarButtonItem + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB220D92D1F095400AC48EA /* UIBarButtonItem + Extension.swift */; };
 		5BB3F6182D1EAF080098C6DE /* ChatListSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3F6172D1EAF050098C6DE /* ChatListSectionHeader.swift */; };
-		5BB3F61A2D1EAF2A0098C6DE /* ChatListPlaceholderTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3F6192D1EAF200098C6DE /* ChatListPlaceholderTVCell.swift */; };
+		5BB3F61A2D1EAF2A0098C6DE /* ChatHistoryPlaceholderTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3F6192D1EAF200098C6DE /* ChatHistoryPlaceholderTVCell.swift */; };
 		5BB3F61C2D1EB5EB0098C6DE /* UINavigationController + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3F61B2D1EB5EB0098C6DE /* UINavigationController + Extension.swift */; };
 		5BB3F61E2D1EB8560098C6DE /* UIFont + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3F61D2D1EB8560098C6DE /* UIFont + Extension.swift */; };
 		5BB3F6202D1EB85D0098C6DE /* Font + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3F61F2D1EB85D0098C6DE /* Font + Extension.swift */; };
@@ -52,6 +58,7 @@
 		5BB3F62A2D1EBE1A0098C6DE /* SFProText-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5BB3F6292D1EBE1A0098C6DE /* SFProText-Semibold.otf */; };
 		5BB3F62C2D1ED0220098C6DE /* UITableView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3F62B2D1ED01B0098C6DE /* UITableView + Extension.swift */; };
 		5BB3F62F2D1EE5E80098C6DE /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3F62E2D1EE5BF0098C6DE /* ChatViewController.swift */; };
+		5BBDB4FB2D21FA4500A405B2 /* ChatHistoryTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBDB4FA2D21FA3E00A405B2 /* ChatHistoryTVCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,12 +68,18 @@
 		5B0EE4092D1DA17E00DF482D /* HTTPErrorTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPErrorTypes.swift; sourceTree = "<group>"; };
 		5B0EE40C2D1DA6F200DF482D /* String + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Extension.swift"; sourceTree = "<group>"; };
 		5B0EE40E2D1DB65900DF482D /* SelectItemDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectItemDelegate.swift; sourceTree = "<group>"; };
-		5B0EE4112D1DB68600DF482D /* CollectionCellConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCellConfig.swift; sourceTree = "<group>"; };
+		5B0EE4112D1DB68600DF482D /* AssistansConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistansConfiguration.swift; sourceTree = "<group>"; };
 		5B0EE4142D1DB6EE00DF482D /* Clues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clues.swift; sourceTree = "<group>"; };
 		5B0EE4162D1DB70800DF482D /* CollectionCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCellModel.swift; sourceTree = "<group>"; };
 		5B0EE41A2D1DB87900DF482D /* HorizontalTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalTVCell.swift; sourceTree = "<group>"; };
 		5B0EE41C2D1DB9C900DF482D /* HorizontalCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalCollectionViewCell.swift; sourceTree = "<group>"; };
 		5B0EE41F2D1DBB5300DF482D /* CustomHorizontalFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHorizontalFlowLayout.swift; sourceTree = "<group>"; };
+		5B1479B92D23514B008AB063 /* UIViewController + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Extension.swift"; sourceTree = "<group>"; };
+		5B1479BC2D2352F5008AB063 /* ListModeStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListModeStrategy.swift; sourceTree = "<group>"; };
+		5B1479BE2D23531D008AB063 /* SectionModeStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionModeStrategy.swift; sourceTree = "<group>"; };
+		5B249B4B2D20ABC100BA27A7 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
+		5B249B4E2D20B43C00BA27A7 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		5B465C432D2327A80028C0BE /* HistoryChatConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryChatConfiguration.swift; sourceTree = "<group>"; };
 		5B5D0AC02D1AA0380089FC7D /* chatgpt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chatgpt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B9B36EA2D1AAB2B003EE1BE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5B9B36EB2D1AAB2B003EE1BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -81,17 +94,17 @@
 		5B9B37052D1AC74A003EE1BE /* SwiftUIView + extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUIView + extension.swift"; sourceTree = "<group>"; };
 		5B9B370A2D1AD18D003EE1BE /* TabbarRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarRouter.swift; sourceTree = "<group>"; };
 		5B9B370C2D1AE74A003EE1BE /* UIViewGradient + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewGradient + Extension.swift"; sourceTree = "<group>"; };
+		5BA53B5F2D21CEAF00B58932 /* TableDisplayStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableDisplayStrategy.swift; sourceTree = "<group>"; };
 		5BAE8D952D1FDFE300FA8551 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		5BAE8D972D1FE00E00FA8551 /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 		5BAE8D992D1FE03200FA8551 /* MainTVSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTVSection.swift; sourceTree = "<group>"; };
 		5BAE8D9B2D201BCA00FA8551 /* UserDefaultsWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsWrapper.swift; sourceTree = "<group>"; };
 		5BAE8D9E2D201C1C00FA8551 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
-		5BAE8DA02D202DE700FA8551 /* ListTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTVCell.swift; sourceTree = "<group>"; };
-		5BAE8DA22D20354C00FA8551 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
+		5BAE8DA02D202DE700FA8551 /* ListModeTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListModeTVCell.swift; sourceTree = "<group>"; };
 		5BB220CC2D1EFE6E00AC48EA /* MainModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainModuleFactory.swift; sourceTree = "<group>"; };
 		5BB220D92D1F095400AC48EA /* UIBarButtonItem + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem + Extension.swift"; sourceTree = "<group>"; };
 		5BB3F6172D1EAF050098C6DE /* ChatListSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListSectionHeader.swift; sourceTree = "<group>"; };
-		5BB3F6192D1EAF200098C6DE /* ChatListPlaceholderTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListPlaceholderTVCell.swift; sourceTree = "<group>"; };
+		5BB3F6192D1EAF200098C6DE /* ChatHistoryPlaceholderTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatHistoryPlaceholderTVCell.swift; sourceTree = "<group>"; };
 		5BB3F61B2D1EB5EB0098C6DE /* UINavigationController + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController + Extension.swift"; sourceTree = "<group>"; };
 		5BB3F61D2D1EB8560098C6DE /* UIFont + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont + Extension.swift"; sourceTree = "<group>"; };
 		5BB3F61F2D1EB85D0098C6DE /* Font + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font + Extension.swift"; sourceTree = "<group>"; };
@@ -101,6 +114,7 @@
 		5BB3F6292D1EBE1A0098C6DE /* SFProText-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Semibold.otf"; sourceTree = "<group>"; };
 		5BB3F62B2D1ED01B0098C6DE /* UITableView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView + Extension.swift"; sourceTree = "<group>"; };
 		5BB3F62E2D1EE5BF0098C6DE /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		5BBDB4FA2D21FA3E00A405B2 /* ChatHistoryTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatHistoryTVCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,10 +132,9 @@
 		5B0EE4022D1D96B600DF482D /* NetworkService */ = {
 			isa = PBXGroup;
 			children = (
-				5B0EE4092D1DA17E00DF482D /* HTTPErrorTypes.swift */,
-				5B0EE4072D1DA16900DF482D /* Enpoints.swift */,
-				5B0EE4052D1DA14D00DF482D /* URLs.swift */,
+				5B249B4E2D20B43C00BA27A7 /* NetworkService.swift */,
 				5B0EE4032D1D96CD00DF482D /* Network.swift */,
+				5B249B4D2D20B41F00BA27A7 /* Utils */,
 			);
 			path = NetworkService;
 			sourceTree = "<group>";
@@ -129,6 +142,7 @@
 		5B0EE40B2D1DA6EB00DF482D /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				5B1479B92D23514B008AB063 /* UIViewController + Extension.swift */,
 				5BB220D92D1F095400AC48EA /* UIBarButtonItem + Extension.swift */,
 				5BB3F62B2D1ED01B0098C6DE /* UITableView + Extension.swift */,
 				5B0EE40C2D1DA6F200DF482D /* String + Extension.swift */,
@@ -142,7 +156,9 @@
 		5B0EE4102D1DB67600DF482D /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				5B0EE4112D1DB68600DF482D /* CollectionCellConfig.swift */,
+				5B465C432D2327A80028C0BE /* HistoryChatConfiguration.swift */,
+				5BA53B5F2D21CEAF00B58932 /* TableDisplayStrategy.swift */,
+				5B0EE4112D1DB68600DF482D /* AssistansConfiguration.swift */,
 				5B0EE40E2D1DB65900DF482D /* SelectItemDelegate.swift */,
 			);
 			path = Protocols;
@@ -163,6 +179,27 @@
 				5B0EE41F2D1DBB5300DF482D /* CustomHorizontalFlowLayout.swift */,
 			);
 			path = FlowLayouts;
+			sourceTree = "<group>";
+		};
+		5B1479BB2D235298008AB063 /* TableViewSetups */ = {
+			isa = PBXGroup;
+			children = (
+				5BAE8D992D1FE03200FA8551 /* MainTVSection.swift */,
+				5B1479BE2D23531D008AB063 /* SectionModeStrategy.swift */,
+				5B1479BC2D2352F5008AB063 /* ListModeStrategy.swift */,
+			);
+			path = TableViewSetups;
+			sourceTree = "<group>";
+		};
+		5B249B4D2D20B41F00BA27A7 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				5B0EE4052D1DA14D00DF482D /* URLs.swift */,
+				5B0EE4072D1DA16900DF482D /* Enpoints.swift */,
+				5B0EE4092D1DA17E00DF482D /* HTTPErrorTypes.swift */,
+				5B249B4B2D20ABC100BA27A7 /* HTTPMethod.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		5B5D0AB72D1AA0380089FC7D = {
@@ -193,14 +230,14 @@
 		5B9B36F22D1AAB2B003EE1BE /* chatgpt */ = {
 			isa = PBXGroup;
 			children = (
-				5BAE8D9D2D201BDE00FA8551 /* Preferences */,
 				5B9B36EC2D1AAB2B003EE1BE /* Info.plist */,
 				5B9B36EE2D1AAB2B003EE1BE /* LaunchScreen.storyboard */,
 				5B9B36E92D1AAB2B003EE1BE /* Application */,
 				5B9B36EB2D1AAB2B003EE1BE /* Assets.xcassets */,
-				5B9B36FC2D1AB54C003EE1BE /* TabBarController */,
-				5BB3F62D2D1EE5AA0098C6DE /* Chat */,
 				5B9B370E2D1AF221003EE1BE /* Main */,
+				5B9B36FC2D1AB54C003EE1BE /* TabBarController */,
+				5BAE8D9D2D201BDE00FA8551 /* Preferences */,
+				5BB3F62D2D1EE5AA0098C6DE /* Chat */,
 				5B0EE4022D1D96B600DF482D /* NetworkService */,
 				5BB3F6212D1EBDEA0098C6DE /* Resourses */,
 				5B0EE40B2D1DA6EB00DF482D /* Extensions */,
@@ -249,9 +286,8 @@
 		5B9B370E2D1AF221003EE1BE /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				5BAE8DA22D20354C00FA8551 /* Cell.swift */,
 				5BB220CC2D1EFE6E00AC48EA /* MainModuleFactory.swift */,
-				5BAE8D992D1FE03200FA8551 /* MainTVSection.swift */,
+				5B1479BB2D235298008AB063 /* TableViewSetups */,
 				5BB3F6162D1EAEFD0098C6DE /* Subviews */,
 				5B0EE41E2D1DBB4B00DF482D /* FlowLayouts */,
 				5B0EE4132D1DB6E500DF482D /* Models */,
@@ -267,8 +303,9 @@
 		5B9CA4DE2D1D6295001BDAB8 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				5BAE8DA02D202DE700FA8551 /* ListTVCell.swift */,
-				5BB3F6192D1EAF200098C6DE /* ChatListPlaceholderTVCell.swift */,
+				5BBDB4FA2D21FA3E00A405B2 /* ChatHistoryTVCell.swift */,
+				5BAE8DA02D202DE700FA8551 /* ListModeTVCell.swift */,
+				5BB3F6192D1EAF200098C6DE /* ChatHistoryPlaceholderTVCell.swift */,
 				5B0EE41A2D1DB87900DF482D /* HorizontalTVCell.swift */,
 				5B0EE41C2D1DB9C900DF482D /* HorizontalCollectionViewCell.swift */,
 			);
@@ -410,6 +447,7 @@
 				5BB3F6202D1EB85D0098C6DE /* Font + Extension.swift in Sources */,
 				5BB220DA2D1F095400AC48EA /* UIBarButtonItem + Extension.swift in Sources */,
 				5B9B36F62D1AAB2B003EE1BE /* AppDelegate.swift in Sources */,
+				5B249B4F2D20B43D00BA27A7 /* NetworkService.swift in Sources */,
 				5B9B37022D1AB5F5003EE1BE /* CustomButton.swift in Sources */,
 				5B0EE41D2D1DB9CC00DF482D /* HorizontalCollectionViewCell.swift in Sources */,
 				5BB220CD2D1EFE6F00AC48EA /* MainModuleFactory.swift in Sources */,
@@ -418,14 +456,20 @@
 				5B0EE41B2D1DB87E00DF482D /* HorizontalTVCell.swift in Sources */,
 				5BB3F6182D1EAF080098C6DE /* ChatListSectionHeader.swift in Sources */,
 				5BB3F61C2D1EB5EB0098C6DE /* UINavigationController + Extension.swift in Sources */,
-				5BB3F61A2D1EAF2A0098C6DE /* ChatListPlaceholderTVCell.swift in Sources */,
+				5BB3F61A2D1EAF2A0098C6DE /* ChatHistoryPlaceholderTVCell.swift in Sources */,
 				5B0EE4042D1D96DB00DF482D /* Network.swift in Sources */,
 				5B0EE4062D1DA14F00DF482D /* URLs.swift in Sources */,
 				5BAE8D9C2D201BDA00FA8551 /* UserDefaultsWrapper.swift in Sources */,
+				5B1479BA2D235156008AB063 /* UIViewController + Extension.swift in Sources */,
+				5BA53B602D21CEB000B58932 /* TableDisplayStrategy.swift in Sources */,
+				5B465C442D2327A90028C0BE /* HistoryChatConfiguration.swift in Sources */,
 				5B0EE40A2D1DA17F00DF482D /* HTTPErrorTypes.swift in Sources */,
-				5B0EE4122D1DB68700DF482D /* CollectionCellConfig.swift in Sources */,
-				5BAE8DA12D202DE800FA8551 /* ListTVCell.swift in Sources */,
+				5B249B4C2D20ABC200BA27A7 /* HTTPMethod.swift in Sources */,
+				5BBDB4FB2D21FA4500A405B2 /* ChatHistoryTVCell.swift in Sources */,
+				5B0EE4122D1DB68700DF482D /* AssistansConfiguration.swift in Sources */,
+				5BAE8DA12D202DE800FA8551 /* ListModeTVCell.swift in Sources */,
 				5B0EE40F2D1DB66000DF482D /* SelectItemDelegate.swift in Sources */,
+				5B1479BF2D23531F008AB063 /* SectionModeStrategy.swift in Sources */,
 				5BB3F61E2D1EB8560098C6DE /* UIFont + Extension.swift in Sources */,
 				5BAE8D9F2D201C2400FA8551 /* Preferences.swift in Sources */,
 				5B9B37002D1AB589003EE1BE /* TabbarDelegate + Extension.swift in Sources */,
@@ -435,9 +479,9 @@
 				5B9B37062D1AC75B003EE1BE /* SwiftUIView + extension.swift in Sources */,
 				5B0EE4202D1DBB5400DF482D /* CustomHorizontalFlowLayout.swift in Sources */,
 				5BB3F62F2D1EE5E80098C6DE /* ChatViewController.swift in Sources */,
+				5B1479BD2D2352F7008AB063 /* ListModeStrategy.swift in Sources */,
 				5B9B36F92D1AAB2B003EE1BE /* MainViewController.swift in Sources */,
 				5BAE8D962D1FDFE500FA8551 /* MainViewModel.swift in Sources */,
-				5BAE8DA32D20354F00FA8551 /* Cell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
