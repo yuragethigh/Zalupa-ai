@@ -4,6 +4,7 @@
 //
 //  Created by Yuriy on 24.12.2024.
 //
+
 import UIKit
 
 final class TabBarController: UITabBarController {
@@ -27,7 +28,7 @@ final class TabBarController: UITabBarController {
 
     private var customButtonBottomConstraint: NSLayoutConstraint?
 
-    // MARK: View lifecycle
+    // MARK:- View lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,23 +57,22 @@ final class TabBarController: UITabBarController {
     }
 
     
-    // MARK: Private methods
+    // MARK:- Private methods
     
     private func setupViewControllers() {
-        let createMainViewController = MainModuleFactory.createModule()
+        let mainViewController = MainModuleFactory.createModule()
         
         tabbarItemConfigure(
-            vc: createMainViewController,
+            vc: mainViewController,
             title: "Главная",
             image: UIImage.tab1,
             tag: 0
         )
         
         
-        let settingsViewController = UIViewController()
-        let settingsNavigationController = UINavigationController(
-            rootViewController: settingsViewController
-        )
+
+        let settingsViewController = SettingsModuleFactory.createModule()
+        
         tabbarItemConfigure(
             vc: settingsViewController,
             title: "Настройки",
@@ -82,9 +82,9 @@ final class TabBarController: UITabBarController {
         
         
         self.viewControllers = [
-            createMainViewController,
+            mainViewController,
             UIViewController(),
-            settingsNavigationController
+            settingsViewController
         ]
     }
     
@@ -172,11 +172,11 @@ final class TabBarController: UITabBarController {
 
 
 
-//#if DEBUG
-//@available(iOS 17.0, *)
-//#Preview {
-//   TabBarController()
-//}
-//#endif
+#if DEBUG
+@available(iOS 17.0, *)
+#Preview {
+   TabBarController()
+}
+#endif
 
 

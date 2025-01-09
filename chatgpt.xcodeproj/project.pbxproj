@@ -25,7 +25,13 @@
 		5B1479BF2D23531F008AB063 /* SectionModeStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1479BE2D23531D008AB063 /* SectionModeStrategy.swift */; };
 		5B249B4C2D20ABC200BA27A7 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B249B4B2D20ABC100BA27A7 /* HTTPMethod.swift */; };
 		5B249B4F2D20B43D00BA27A7 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B249B4E2D20B43C00BA27A7 /* NetworkService.swift */; };
+		5B2A66952D2C6A45004D1761 /* FlexibleTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2A66942D2C6A43004D1761 /* FlexibleTextView.swift */; };
 		5B465C442D2327A90028C0BE /* HistoryChatConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B465C432D2327A80028C0BE /* HistoryChatConfiguration.swift */; };
+		5B6C77D62D26F5B000F64576 /* BannerTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6C77D52D26F5AE00F64576 /* BannerTVCell.swift */; };
+		5B6C77D82D26F6AE00F64576 /* PremiumBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6C77D72D26F6AC00F64576 /* PremiumBannerView.swift */; };
+		5B6C77DA2D26F6D500F64576 /* SettingsItemTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6C77D92D26F6D400F64576 /* SettingsItemTVCell.swift */; };
+		5B6C77DC2D27221F00F64576 /* AnotherAppTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6C77DB2D27221E00F64576 /* AnotherAppTVCell.swift */; };
+		5B6C77DF2D27224A00F64576 /* AnotherAppTVHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6C77DE2D27224900F64576 /* AnotherAppTVHeader.swift */; };
 		5B9B36F32D1AAB2B003EE1BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B9B36EB2D1AAB2B003EE1BE /* Assets.xcassets */; };
 		5B9B36F52D1AAB2B003EE1BE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B9B36EE2D1AAB2B003EE1BE /* LaunchScreen.storyboard */; };
 		5B9B36F62D1AAB2B003EE1BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9B36EA2D1AAB2B003EE1BE /* AppDelegate.swift */; };
@@ -39,6 +45,8 @@
 		5B9B370B2D1AD197003EE1BE /* TabbarRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9B370A2D1AD18D003EE1BE /* TabbarRouter.swift */; };
 		5B9B370D2D1AE756003EE1BE /* UIViewGradient + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9B370C2D1AE74A003EE1BE /* UIViewGradient + Extension.swift */; };
 		5BA53B602D21CEB000B58932 /* TableDisplayStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA53B5F2D21CEAF00B58932 /* TableDisplayStrategy.swift */; };
+		5BAD3C002D243E12006AD192 /* SettingsModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAD3BFF2D243E0B006AD192 /* SettingsModuleFactory.swift */; };
+		5BAD3C022D243E5B006AD192 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAD3C012D243E59006AD192 /* SettingsViewController.swift */; };
 		5BAE8D962D1FDFE500FA8551 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE8D952D1FDFE300FA8551 /* MainViewModel.swift */; };
 		5BAE8D982D1FE00F00FA8551 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE8D972D1FE00E00FA8551 /* MainRouter.swift */; };
 		5BAE8D9A2D1FE03300FA8551 /* MainTVSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE8D992D1FE03200FA8551 /* MainTVSection.swift */; };
@@ -79,8 +87,14 @@
 		5B1479BE2D23531D008AB063 /* SectionModeStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionModeStrategy.swift; sourceTree = "<group>"; };
 		5B249B4B2D20ABC100BA27A7 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 		5B249B4E2D20B43C00BA27A7 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		5B2A66942D2C6A43004D1761 /* FlexibleTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleTextView.swift; sourceTree = "<group>"; };
 		5B465C432D2327A80028C0BE /* HistoryChatConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryChatConfiguration.swift; sourceTree = "<group>"; };
 		5B5D0AC02D1AA0380089FC7D /* chatgpt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chatgpt.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B6C77D52D26F5AE00F64576 /* BannerTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerTVCell.swift; sourceTree = "<group>"; };
+		5B6C77D72D26F6AC00F64576 /* PremiumBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumBannerView.swift; sourceTree = "<group>"; };
+		5B6C77D92D26F6D400F64576 /* SettingsItemTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItemTVCell.swift; sourceTree = "<group>"; };
+		5B6C77DB2D27221E00F64576 /* AnotherAppTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnotherAppTVCell.swift; sourceTree = "<group>"; };
+		5B6C77DE2D27224900F64576 /* AnotherAppTVHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnotherAppTVHeader.swift; sourceTree = "<group>"; };
 		5B9B36EA2D1AAB2B003EE1BE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5B9B36EB2D1AAB2B003EE1BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5B9B36EC2D1AAB2B003EE1BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -95,6 +109,8 @@
 		5B9B370A2D1AD18D003EE1BE /* TabbarRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarRouter.swift; sourceTree = "<group>"; };
 		5B9B370C2D1AE74A003EE1BE /* UIViewGradient + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewGradient + Extension.swift"; sourceTree = "<group>"; };
 		5BA53B5F2D21CEAF00B58932 /* TableDisplayStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableDisplayStrategy.swift; sourceTree = "<group>"; };
+		5BAD3BFF2D243E0B006AD192 /* SettingsModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModuleFactory.swift; sourceTree = "<group>"; };
+		5BAD3C012D243E59006AD192 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		5BAE8D952D1FDFE300FA8551 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		5BAE8D972D1FE00E00FA8551 /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 		5BAE8D992D1FE03200FA8551 /* MainTVSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTVSection.swift; sourceTree = "<group>"; };
@@ -202,6 +218,14 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		5B2A66932D2C6A30004D1761 /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				5B2A66942D2C6A43004D1761 /* FlexibleTextView.swift */,
+			);
+			path = Subviews;
+			sourceTree = "<group>";
+		};
 		5B5D0AB72D1AA0380089FC7D = {
 			isa = PBXGroup;
 			children = (
@@ -216,6 +240,25 @@
 				5B5D0AC02D1AA0380089FC7D /* chatgpt.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		5B6C77D42D26F5A700F64576 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				5B6C77DB2D27221E00F64576 /* AnotherAppTVCell.swift */,
+				5B6C77D92D26F6D400F64576 /* SettingsItemTVCell.swift */,
+				5B6C77D72D26F6AC00F64576 /* PremiumBannerView.swift */,
+				5B6C77D52D26F5AE00F64576 /* BannerTVCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		5B6C77DD2D27223F00F64576 /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				5B6C77DE2D27224900F64576 /* AnotherAppTVHeader.swift */,
+			);
+			path = Subviews;
 			sourceTree = "<group>";
 		};
 		5B9B36E92D1AAB2B003EE1BE /* Application */ = {
@@ -234,8 +277,9 @@
 				5B9B36EE2D1AAB2B003EE1BE /* LaunchScreen.storyboard */,
 				5B9B36E92D1AAB2B003EE1BE /* Application */,
 				5B9B36EB2D1AAB2B003EE1BE /* Assets.xcassets */,
-				5B9B370E2D1AF221003EE1BE /* Main */,
 				5B9B36FC2D1AB54C003EE1BE /* TabBarController */,
+				5B9B370E2D1AF221003EE1BE /* Main */,
+				5BAD3BFE2D243DFD006AD192 /* Settings */,
 				5BAE8D9D2D201BDE00FA8551 /* Preferences */,
 				5BB3F62D2D1EE5AA0098C6DE /* Chat */,
 				5B0EE4022D1D96B600DF482D /* NetworkService */,
@@ -286,7 +330,6 @@
 		5B9B370E2D1AF221003EE1BE /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				5BB220CC2D1EFE6E00AC48EA /* MainModuleFactory.swift */,
 				5B1479BB2D235298008AB063 /* TableViewSetups */,
 				5BB3F6162D1EAEFD0098C6DE /* Subviews */,
 				5B0EE41E2D1DBB4B00DF482D /* FlowLayouts */,
@@ -296,6 +339,7 @@
 				5B9B36F12D1AAB2B003EE1BE /* MainViewController.swift */,
 				5BAE8D952D1FDFE300FA8551 /* MainViewModel.swift */,
 				5BAE8D972D1FE00E00FA8551 /* MainRouter.swift */,
+				5BB220CC2D1EFE6E00AC48EA /* MainModuleFactory.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -310,6 +354,17 @@
 				5B0EE41C2D1DB9C900DF482D /* HorizontalCollectionViewCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		5BAD3BFE2D243DFD006AD192 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				5B6C77DD2D27223F00F64576 /* Subviews */,
+				5B6C77D42D26F5A700F64576 /* Cells */,
+				5BAD3C012D243E59006AD192 /* SettingsViewController.swift */,
+				5BAD3BFF2D243E0B006AD192 /* SettingsModuleFactory.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		5BAE8D9D2D201BDE00FA8551 /* Preferences */ = {
@@ -351,6 +406,7 @@
 		5BB3F62D2D1EE5AA0098C6DE /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				5B2A66932D2C6A30004D1761 /* Subviews */,
 				5BB3F62E2D1EE5BF0098C6DE /* ChatViewController.swift */,
 			);
 			path = Chat;
@@ -441,6 +497,7 @@
 				5BAE8D9A2D1FE03300FA8551 /* MainTVSection.swift in Sources */,
 				5BB3F62C2D1ED0220098C6DE /* UITableView + Extension.swift in Sources */,
 				5B9B370B2D1AD197003EE1BE /* TabbarRouter.swift in Sources */,
+				5B2A66952D2C6A45004D1761 /* FlexibleTextView.swift in Sources */,
 				5BAE8D982D1FE00F00FA8551 /* MainRouter.swift in Sources */,
 				5B0EE4152D1DB6EF00DF482D /* Clues.swift in Sources */,
 				5B0EE40D2D1DA6F900DF482D /* String + Extension.swift in Sources */,
@@ -455,11 +512,16 @@
 				5B9B370D2D1AE756003EE1BE /* UIViewGradient + Extension.swift in Sources */,
 				5B0EE41B2D1DB87E00DF482D /* HorizontalTVCell.swift in Sources */,
 				5BB3F6182D1EAF080098C6DE /* ChatListSectionHeader.swift in Sources */,
+				5B6C77D62D26F5B000F64576 /* BannerTVCell.swift in Sources */,
 				5BB3F61C2D1EB5EB0098C6DE /* UINavigationController + Extension.swift in Sources */,
 				5BB3F61A2D1EAF2A0098C6DE /* ChatHistoryPlaceholderTVCell.swift in Sources */,
 				5B0EE4042D1D96DB00DF482D /* Network.swift in Sources */,
+				5B6C77D82D26F6AE00F64576 /* PremiumBannerView.swift in Sources */,
+				5BAD3C022D243E5B006AD192 /* SettingsViewController.swift in Sources */,
+				5B6C77DF2D27224A00F64576 /* AnotherAppTVHeader.swift in Sources */,
 				5B0EE4062D1DA14F00DF482D /* URLs.swift in Sources */,
 				5BAE8D9C2D201BDA00FA8551 /* UserDefaultsWrapper.swift in Sources */,
+				5BAD3C002D243E12006AD192 /* SettingsModuleFactory.swift in Sources */,
 				5B1479BA2D235156008AB063 /* UIViewController + Extension.swift in Sources */,
 				5BA53B602D21CEB000B58932 /* TableDisplayStrategy.swift in Sources */,
 				5B465C442D2327A90028C0BE /* HistoryChatConfiguration.swift in Sources */,
@@ -473,9 +535,11 @@
 				5BB3F61E2D1EB8560098C6DE /* UIFont + Extension.swift in Sources */,
 				5BAE8D9F2D201C2400FA8551 /* Preferences.swift in Sources */,
 				5B9B37002D1AB589003EE1BE /* TabbarDelegate + Extension.swift in Sources */,
+				5B6C77DC2D27221F00F64576 /* AnotherAppTVCell.swift in Sources */,
 				5B0EE4172D1DB70900DF482D /* CollectionCellModel.swift in Sources */,
 				5B9B36F82D1AAB2B003EE1BE /* TabbarController.swift in Sources */,
 				5B9B36FE2D1AB568003EE1BE /* Tabbar + Extension.swift in Sources */,
+				5B6C77DA2D26F6D500F64576 /* SettingsItemTVCell.swift in Sources */,
 				5B9B37062D1AC75B003EE1BE /* SwiftUIView + extension.swift in Sources */,
 				5B0EE4202D1DBB5400DF482D /* CustomHorizontalFlowLayout.swift in Sources */,
 				5BB3F62F2D1EE5E80098C6DE /* ChatViewController.swift in Sources */,
@@ -515,7 +579,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -545,7 +609,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -43,3 +43,25 @@ extension UIViewController {
     }
 }
 
+
+
+extension UIViewController {
+    func safeAreaBottomView(window: UIWindow?, filledColor: UIColor) {
+        guard let window = view.window else { return }
+        
+        let fillerView = UIView()
+        fillerView.backgroundColor = filledColor
+        fillerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        window.addSubview(fillerView)
+
+        NSLayoutConstraint.activate([
+            fillerView.leadingAnchor.constraint(equalTo: window.leadingAnchor),
+            fillerView.trailingAnchor.constraint(equalTo: window.trailingAnchor),
+            fillerView.topAnchor.constraint(equalTo: window.safeAreaLayoutGuide.bottomAnchor),
+            fillerView.bottomAnchor.constraint(equalTo: window.bottomAnchor)
+        ])
+    }
+}
+
+

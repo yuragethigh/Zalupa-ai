@@ -12,10 +12,14 @@ final class Preferences {
     static let shared = Preferences()
     
     @UserDefault(Preferences.Key.isListModeEnabled) var isListModeEnabled = false
+    @UserDefault(Preferences.Key.isPremiumEnabled) var isPremiumEnabled = false
+    @UserDefault(Preferences.Key.isAuthorized) var isAuthorized = false
 }
 
-extension Preferences {
-    enum Key {
+private extension Preferences {
+    private enum Key {
         static let isListModeEnabled = "isListModeEnabled"
+        static let isPremiumEnabled = "isPremiumEnabled"
+        static let isAuthorized = "isAuthorized"
     }
 }
