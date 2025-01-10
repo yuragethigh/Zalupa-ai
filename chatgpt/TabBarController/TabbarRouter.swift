@@ -16,7 +16,8 @@ final class TabbarRouter {
     }
     
     func presentViewController() {
-        let chatViewController = ChatViewController()
+        let preferences = Preferences.shared
+        let chatViewController = ChatViewController(preferences: preferences)
         let navigationController = UINavigationController(rootViewController: chatViewController)
         navigationController.modalPresentationStyle = .overFullScreen
         viewController?.present(navigationController, animated: true)

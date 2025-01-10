@@ -14,6 +14,7 @@ final class Preferences {
     @UserDefault(Preferences.Key.isListModeEnabled) var isListModeEnabled = false
     @UserDefault(Preferences.Key.isPremiumEnabled) var isPremiumEnabled = false
     @UserDefault(Preferences.Key.isAuthorized) var isAuthorized = false
+    @UserDefault(Preferences.Key.micPerission) var micPerission = false
 }
 
 private extension Preferences {
@@ -21,5 +22,6 @@ private extension Preferences {
         static let isListModeEnabled = "isListModeEnabled"
         static let isPremiumEnabled = "isPremiumEnabled"
         static let isAuthorized = "isAuthorized"
+        static let micPerission = "micPerission"
     }
 }

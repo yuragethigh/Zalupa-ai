@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B04DDA82D301DF300A9A6E0 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B04DDA72D301DED00A9A6E0 /* ImagePicker.swift */; };
+		5B04DDAA2D3026CA00A9A6E0 /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B04DDA92D3026CA00A9A6E0 /* KeyboardManager.swift */; };
 		5B0EE4012D1D943500DF482D /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 5B0EE4002D1D943500DF482D /* Kingfisher */; };
 		5B0EE4042D1D96DB00DF482D /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0EE4032D1D96CD00DF482D /* Network.swift */; };
 		5B0EE4062D1DA14F00DF482D /* URLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0EE4052D1DA14D00DF482D /* URLs.swift */; };
@@ -26,6 +28,7 @@
 		5B249B4C2D20ABC200BA27A7 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B249B4B2D20ABC100BA27A7 /* HTTPMethod.swift */; };
 		5B249B4F2D20B43D00BA27A7 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B249B4E2D20B43C00BA27A7 /* NetworkService.swift */; };
 		5B2A66952D2C6A45004D1761 /* FlexibleTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2A66942D2C6A43004D1761 /* FlexibleTextView.swift */; };
+		5B32A4DA2D3142C40059028B /* SelectedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B32A4D92D3142C20059028B /* SelectedButton.swift */; };
 		5B465C442D2327A90028C0BE /* HistoryChatConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B465C432D2327A80028C0BE /* HistoryChatConfiguration.swift */; };
 		5B6C77D62D26F5B000F64576 /* BannerTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6C77D52D26F5AE00F64576 /* BannerTVCell.swift */; };
 		5B6C77D82D26F6AE00F64576 /* PremiumBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6C77D72D26F6AC00F64576 /* PremiumBannerView.swift */; };
@@ -70,6 +73,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5B04DDA72D301DED00A9A6E0 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		5B04DDA92D3026CA00A9A6E0 /* KeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
 		5B0EE4032D1D96CD00DF482D /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		5B0EE4052D1DA14D00DF482D /* URLs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLs.swift; sourceTree = "<group>"; };
 		5B0EE4072D1DA16900DF482D /* Enpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enpoints.swift; sourceTree = "<group>"; };
@@ -88,6 +93,7 @@
 		5B249B4B2D20ABC100BA27A7 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 		5B249B4E2D20B43C00BA27A7 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		5B2A66942D2C6A43004D1761 /* FlexibleTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleTextView.swift; sourceTree = "<group>"; };
+		5B32A4D92D3142C20059028B /* SelectedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedButton.swift; sourceTree = "<group>"; };
 		5B465C432D2327A80028C0BE /* HistoryChatConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryChatConfiguration.swift; sourceTree = "<group>"; };
 		5B5D0AC02D1AA0380089FC7D /* chatgpt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chatgpt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B6C77D52D26F5AE00F64576 /* BannerTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerTVCell.swift; sourceTree = "<group>"; };
@@ -221,6 +227,8 @@
 		5B2A66932D2C6A30004D1761 /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
+				5B32A4D92D3142C20059028B /* SelectedButton.swift */,
+				5B04DDA72D301DED00A9A6E0 /* ImagePicker.swift */,
 				5B2A66942D2C6A43004D1761 /* FlexibleTextView.swift */,
 			);
 			path = Subviews;
@@ -406,8 +414,9 @@
 		5BB3F62D2D1EE5AA0098C6DE /* Chat */ = {
 			isa = PBXGroup;
 			children = (
-				5B2A66932D2C6A30004D1761 /* Subviews */,
+				5B04DDA92D3026CA00A9A6E0 /* KeyboardManager.swift */,
 				5BB3F62E2D1EE5BF0098C6DE /* ChatViewController.swift */,
+				5B2A66932D2C6A30004D1761 /* Subviews */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -496,13 +505,16 @@
 				5B0EE4082D1DA16A00DF482D /* Enpoints.swift in Sources */,
 				5BAE8D9A2D1FE03300FA8551 /* MainTVSection.swift in Sources */,
 				5BB3F62C2D1ED0220098C6DE /* UITableView + Extension.swift in Sources */,
+				5B04DDA82D301DF300A9A6E0 /* ImagePicker.swift in Sources */,
 				5B9B370B2D1AD197003EE1BE /* TabbarRouter.swift in Sources */,
 				5B2A66952D2C6A45004D1761 /* FlexibleTextView.swift in Sources */,
 				5BAE8D982D1FE00F00FA8551 /* MainRouter.swift in Sources */,
+				5B04DDAA2D3026CA00A9A6E0 /* KeyboardManager.swift in Sources */,
 				5B0EE4152D1DB6EF00DF482D /* Clues.swift in Sources */,
 				5B0EE40D2D1DA6F900DF482D /* String + Extension.swift in Sources */,
 				5BB3F6202D1EB85D0098C6DE /* Font + Extension.swift in Sources */,
 				5BB220DA2D1F095400AC48EA /* UIBarButtonItem + Extension.swift in Sources */,
+				5B32A4DA2D3142C40059028B /* SelectedButton.swift in Sources */,
 				5B9B36F62D1AAB2B003EE1BE /* AppDelegate.swift in Sources */,
 				5B249B4F2D20B43D00BA27A7 /* NetworkService.swift in Sources */,
 				5B9B37022D1AB5F5003EE1BE /* CustomButton.swift in Sources */,
@@ -574,6 +586,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = chatgpt/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera needs";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Lib needs";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -604,6 +618,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = chatgpt/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera needs";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Lib needs";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

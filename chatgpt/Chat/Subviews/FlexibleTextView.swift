@@ -8,7 +8,10 @@
 import UIKit
 
 final class FlexibleTextView: UITextView {
-    var maxHeight: CGFloat = 0.0
+    
+    // MARK: - Properties
+    
+    var maxHeight: CGFloat = 0
     
     private let placeholderTextView: UITextView = {
         let tv = UITextView()
@@ -16,7 +19,9 @@ final class FlexibleTextView: UITextView {
         tv.backgroundColor = .clear
         tv.isScrollEnabled = false
         tv.isUserInteractionEnabled = false
-        tv.textColor = .gray
+        tv.textColor = .white.withAlphaComponent(0.32)
+        tv.font = .SFProText(weight: .regular, size: 15)
+        tv.textContainerInset = UIEdgeInsets(top: 2, left: 0, bottom: 2, right: 0)
         return tv
     }()
     
@@ -25,55 +30,34 @@ final class FlexibleTextView: UITextView {
         set { placeholderTextView.text = newValue }
     }
     
+    //MARK: - Initializers
+    
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
-        isScrollEnabled = false
-        autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
-        // Placeholder
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(UITextInputDelegate.textDidChange(_:)),
-            name: UITextView.textDidChangeNotification,
-            object: self
-        )
-        placeholderTextView.font = font
-        addSubview(placeholderTextView)
+        setupObserver()
         
-        NSLayoutConstraint.activate([
-            placeholderTextView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            placeholderTextView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            placeholderTextView.topAnchor.constraint(equalTo: topAnchor),
-            placeholderTextView.bottomAnchor.constraint(equalTo: bottomAnchor),
-        ])
+        setupTextView()
+       
+        setupPlaceholderTVConstraints()
     }
-    
-    
+
     deinit {
-        NotificationCenter.default.removeObserver(self)
+        removeObserver()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override var text: String! {
+    //MARK: - Overrides
+    
+    override var text: String? {
         didSet {
             invalidateIntrinsicContentSize()
-            placeholderTextView.isHidden = !text.isEmpty
-        }
-    }
-    
-    override var font: UIFont? {
-        didSet {
-            placeholderTextView.font = font
-            invalidateIntrinsicContentSize()
-        }
-    }
-    
-    override var contentInset: UIEdgeInsets {
-        didSet {
-            placeholderTextView.contentInset = contentInset
+            if let text {
+                placeholderTextView.isHidden = !text.isEmpty
+            }
         }
     }
     
@@ -95,13 +79,69 @@ final class FlexibleTextView: UITextView {
         } else if isScrollEnabled {
             isScrollEnabled = false
         }
-        
         return size
     }
     
+    //MARK: - Private methods
+    
     @objc private func textDidChange(_ note: Notification) {
         invalidateIntrinsicContentSize()
-        placeholderTextView.isHidden = !text.isEmpty
+        if let text {
+            placeholderTextView.isHidden = !text.isEmpty
+        }
     }
 }
+
+
+//MARK: - FlexibleTextView + Extension
+
+
+private extension FlexibleTextView {
+    private func setupPlaceholderTVConstraints() {
+        addSubview(placeholderTextView)
+        
+        NSLayoutConstraint.activate([
+            placeholderTextView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            placeholderTextView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            placeholderTextView.topAnchor.constraint(equalTo: topAnchor),
+            placeholderTextView.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
+    }
+}
+
+private extension FlexibleTextView {
+    private func setupTextView() {
+        isScrollEnabled = false
+        autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        backgroundColor = .textfield
+        textContainerInset = placeholderTextView.textContainerInset
+        font = placeholderTextView.font
+    }
+}
+
+
+private extension FlexibleTextView {
+    private func setupObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(textDidChange),
+            name: UITextView.textDidChangeNotification,
+            object: self
+        )
+    }
+    
+    private func removeObserver() {
+        NotificationCenter.default.removeObserver(self)
+    }
+}
+
+#if DEBUG
+@available(iOS 17.0, *)
+#Preview {
+    UINavigationController(
+        rootViewController: ChatViewController(preferences: .shared)
+    )
+}
+#endif
+
 
