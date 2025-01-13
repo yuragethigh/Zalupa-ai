@@ -18,7 +18,7 @@ final class ChatViewController: UIViewController {
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.keyboardDismissMode = .interactive
-        tableView.contentInset.bottom = 116
+//        tableView.contentInset.bottom = 34
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -53,9 +53,52 @@ final class ChatViewController: UIViewController {
         setupTVConstraints()
         setupDelegates()
         setupBottomInputView()
+            
+        preferences.$micPerission
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newValue in
+                self?.bottomInputView.updateMicPermission(newValue)
+            }
+            .store(in: &cancellables)
         
-        tableView.scrollToRow(at: IndexPath(row: items - 1, section: 0), at: .bottom, animated: false)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+        
+        bottomInputView.textFieldBecomeFirstResponder()
+        
     }
+    
+    @objc func keyboardWillHide(_ notification: Notification) {
+        adjustTableBottomInset(with: 0)
+    }
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+            adjustTableBottomInset(with: keyboardHeight)
+            tableView.scrollToRow(at: IndexPath(row: items - 1, section: 0), at: .bottom, animated: false)
+        }
+    }
+    
+    private func adjustTableBottomInset(with keyboardHeight: CGFloat) {
+        let additionalInset: CGFloat = 0
+        tableView.contentInset.bottom = (bottomInputView.bottomViewHeight + additionalInset + keyboardHeight) - view.safeAreaInsets.bottom
+        tableView.verticalScrollIndicatorInsets.bottom = (bottomInputView.bottomViewHeight + additionalInset + keyboardHeight) - view.safeAreaInsets.bottom
+        
+    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -129,11 +172,9 @@ extension ChatViewController: BottomInputDelegate {
     }
 }
 
-
 // MARK: - UITableViewDelegate / UITableViewDataSource
 
-
-extension ChatViewController: UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
+extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         items
     }
@@ -151,13 +192,9 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource, UIScro
             object: bottomInputView.textField
         )
     }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print(scrollView.contentOffset.y)
-    }
 }
 
-
+// MARK: - Constraints
 
 private extension ChatViewController {
     
@@ -180,6 +217,8 @@ private extension ChatViewController {
         keyboardManager.bind(to: tableView)
     }
 }
+
+// MARK: - Setup delegates
 
 private extension ChatViewController {
     private func setupDelegates() {
@@ -310,11 +349,19 @@ final class BottomInputView: UIView {
 
     weak var bottomInputDelegate: BottomInputDelegate?
     
-    private var selectedImage: UIImage?
-        
+    private var selectedImage: UIImage? {
+        didSet {
+            updateSendButtonState()
+        }
+    }
+    
+    private var micPermission: Bool = false
+    
+    private var cancellables: Set<AnyCancellable> = []
+    
     @Published var buttonState: SendButtonState = .openBottomSheet
-    var micPermission: Bool = true
-    var cancellables: Set<AnyCancellable> = []
+
+    
     //MARK: - Initializers
     
     override init(frame: CGRect) {
@@ -352,6 +399,15 @@ final class BottomInputView: UIView {
         return .zero
     }
     
+    var bottomViewHeight: CGFloat = .zero
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let newHeight = bounds.height
+        bottomViewHeight = newHeight
+        print(newHeight)
+    }
+    
     //MARK: - Private methods
     
     @objc private func sendButtonIsTapped() {
@@ -363,7 +419,8 @@ final class BottomInputView: UIView {
             bottomInputDelegate?.presentBottomSheetAction()
         case .send:
             bottomInputDelegate?.sendButtonAction(textField.text, selectedImage)
-            clearField()
+            clearTextField()
+            removeSelectedImage()
         }
     }
     
@@ -372,38 +429,46 @@ final class BottomInputView: UIView {
     }
     
     @objc private func crossButtonIsTapped() {
-        clearField()
+        clearTextField()
     }
     
     @objc private func textDidChange(_ note: Notification) {
-        update()
-    }
-    
-    func update() {
-        if let text = textField.text, !text.isEmpty {
-            buttonState = .send
-            textFieldDeleteButton.isHidden = false
-            sendButton.setImage(buttonState.currentImage, for: .normal)
-        } else if Preferences.shared.micPerission {
-            buttonState = .openBottomSheet
-            textFieldDeleteButton.isHidden = true
-            sendButton.setImage(buttonState.currentImage, for: .normal)
-
-        } else {
-            buttonState = .requestMicPermission
-            textFieldDeleteButton.isHidden = true
-            sendButton.setImage(buttonState.currentImage, for: .normal)
-
-        }
+        updateSendButtonState()
     }
     
     @objc private func imageButtonIsTapped() {
+        removeSelectedImage()
+    }
+    
+    private func removeSelectedImage() {
         verticalStack.removeArrangedSubview(horizontalStack)
         horizontalStack.removeFromSuperview()
         selectedImage = nil
     }
     
+    private func updateSendButtonState() {
+        if let text = textField.text, !text.isEmpty || selectedImage != nil {
+            buttonState = .send
+            textFieldDeleteButton.isHidden = text.isEmpty
+            sendButton.setImage(buttonState.currentImage, for: .normal)
+        } else if micPermission {
+            buttonState = .openBottomSheet
+            textFieldDeleteButton.isHidden = true
+            sendButton.setImage(buttonState.currentImage, for: .normal)
+        } else {
+            buttonState = .requestMicPermission
+            textFieldDeleteButton.isHidden = true
+            sendButton.setImage(buttonState.currentImage, for: .normal)
+            
+        }
+    }
+    
     //MARK: - Public methods
+    
+    func updateMicPermission(_ newValue: Bool) {
+        micPermission = newValue
+        updateSendButtonState()
+    }
     
     func configureSelectImageButton(with image: UIImage?) {
 
@@ -415,12 +480,20 @@ final class BottomInputView: UIView {
         }
     }
     
-    func clearField() {
+    func clearTextField() {
         textField.text = ""
         NotificationCenter.default.post(
             name: UITextView.textDidChangeNotification,
             object: textField
         )
+    }
+    
+    func textFieldBecomeFirstResponder() {
+        textField.becomeFirstResponder()
+    }
+    
+    func textFieldResignFirstResponder() {
+        textField.resignFirstResponder()
     }
 }
 
@@ -435,13 +508,6 @@ private extension BottomInputView {
             name: UITextView.textDidChangeNotification,
             object: textField
         )
-        
-        Preferences.shared.$micPerission
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] isEnambled in
-                guard let self else { return }
-                update()
-            }.store(in: &cancellables)
     }
     
      func removeObserver() {
