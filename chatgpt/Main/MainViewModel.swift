@@ -19,13 +19,12 @@ final class MainViewModel {
         self.networkService = networkService
     }
     
-    @Published private(set) var assistans = [AssistansConfiguration]()
     @Published private(set) var historyChats = [HistoryChatConfiguration]()
-    
+    @Published private(set) var assistants = [AssistanceTypes: [AssistantsConfiguration]]()
     
     func fetchAssistants() {
         networkService.request(
-            decodedType: [CollectionCellModel].self,
+            decodedType: [AssistansModel].self,
             endPoint: .assistants
         )
         .sink { completion in
@@ -47,13 +46,19 @@ extension MainViewModel {
         self.historyChats = items
     }
     
-    func updateAssistants(_ items: [AssistansConfiguration]) {
-        self.assistans = items
+    func updateAssistants(_ items: [AssistantsConfiguration]) {
+        let assistansWithoutFirst = Array(items.dropFirst())
+        assistants[.pager] = assistansWithoutFirst
+        assistants[.list] = items
     }
     
     func removeHistoryChat(_ item: Int) {
         self.historyChats.remove(at: item)
     }
+}
+
+enum AssistanceTypes: String {
+    case pager, list
 }
 
 

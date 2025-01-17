@@ -10,16 +10,19 @@ import UIKit
 final class ListModeStrategy: TableDisplayStrategy {
     
     
-    private let assistans: [AssistansConfiguration]
+    private var assistans: [AssistantsConfiguration]
+    private var isPremium: Bool
     
     weak var selectItemDelegate: SelectItemDelegate?
     
     
     init(
-        assistans: [AssistansConfiguration],
+        assistans: [AssistantsConfiguration],
+        isPremium: Bool,
         selectItemDelegate: SelectItemDelegate
     ) {
         self.assistans = assistans
+        self.isPremium = isPremium
         self.selectItemDelegate = selectItemDelegate
     }
 
@@ -33,8 +36,8 @@ final class ListModeStrategy: TableDisplayStrategy {
 
     func cellForRow(
         at indexPath: IndexPath,
-        in tableView: UITableView) -> UITableViewCell {
-        
+        in tableView: UITableView
+    ) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: ListModeTVCell.identifier
@@ -42,13 +45,13 @@ final class ListModeStrategy: TableDisplayStrategy {
             return UITableViewCell()
         }
         
-        let item = assistans[indexPath.row]
-        
-        cell.configure(item)
+        let item = assistans[indexPath.item]
+                
+        cell.configure(item, isPremium: isPremium)
         
         return cell
     }
-
+    
     func heightForRow(at indexPath: IndexPath) -> CGFloat {
         return 76
     }

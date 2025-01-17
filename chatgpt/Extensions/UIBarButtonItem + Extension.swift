@@ -30,7 +30,7 @@ extension UIBarButtonItem {
     }
     
     convenience init(image: UIImage, target: Any?, action: Selector?) {
-        let button = ButtonWithLargerHitArea(type: .custom)
+        let button = ButtonWithTouchSize()
         button.setImage(image, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         
@@ -53,19 +53,19 @@ extension UIBarButtonItem {
     
 }
 
-class ButtonWithLargerHitArea: UIButton {
-    private let hitAreaInset: CGFloat = -50
-
-    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        let largerArea = bounds.insetBy(dx: hitAreaInset, dy: hitAreaInset)
-        return largerArea.contains(point)
-    }
+class ButtonWithTouchSize: UIButton {
     
-    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        let largerArea = bounds.insetBy(dx: hitAreaInset, dy: hitAreaInset)
-        if largerArea.contains(point) {
-            return self
-        }
-        return nil
+    var touchAreaPadding: UIEdgeInsets = .init(top: 8, left: 8, bottom: 8, right: 8)
+    
+    override func point(inside point: CGPoint,
+                        with event: UIEvent?) -> Bool {
+        let rect = bounds.inset(by: touchAreaPadding.inverted())
+        return rect.contains(point)
+    }
+}
+
+private extension UIEdgeInsets {
+    func inverted() -> Self {
+        return .init(top: -top, left: -left, bottom: -bottom, right: -right)
     }
 }

@@ -14,7 +14,7 @@ final class AnotherAppTVHeader: UIView {
     private let textLabel: UILabel = {
         let textLabel = UILabel()
         textLabel.font = .SFProText(weight: .semibold, size: 18)
-        textLabel.text = "Другие наши приложения:"
+        textLabel.text = SettingsLocs.anotherAppsTitle
         textLabel.textColor = .white
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         return textLabel

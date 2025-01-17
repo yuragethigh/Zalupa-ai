@@ -7,14 +7,14 @@
 
 import Foundation
 
-protocol AssistansConfiguration {
+protocol AssistantsConfiguration {
     var title: String { get }
     var name: String { get }
     var description: String { get }
-    var imageDefault: URL? { get }
-    var imageLocked: URL? { get }
     var imageAvatar: URL? { get }
-    var isPremium: Bool { get }
+    var animation: URL? { get }
+    var backgroundColor: AssistantsColors { get }
+    var freeAssistant: Bool { get }
     var systemMessage: String { get }
     var clues: [Clues] { get }
 }

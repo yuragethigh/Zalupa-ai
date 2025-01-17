@@ -11,33 +11,69 @@ import Combine
 final class ChatViewController: UIViewController {
     
     // MARK: - Properties
-    var items = 29
+    var messages = [String]()
+    
+    @Published var data: [MockData] = [
+        MockData(title: "Написать текст"),
+        MockData(title: "Придумать"),
+        MockData(title: "Проанализировать"),
+        MockData(title: "Составить план"),
+        MockData(title: "Получить совет")
+    ]
+    
+    private let collectionView: UICollectionView = {
+        let layout = CenteredFlowLayout()
+        layout.minimumInteritemSpacing = 14
+        layout.minimumLineSpacing = 18
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.backgroundColor = .clear
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.register(
+            ChatPlaceholderCVCell.self,
+            forCellWithReuseIdentifier: ChatPlaceholderCVCell.id
+        )
+        return cv
+    }()
     
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.keyboardDismissMode = .interactive
-//        tableView.contentInset.bottom = 34
+        tableView.contentInset.bottom = 70
+        tableView.showsVerticalScrollIndicator = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
     
+    private let bottomInputView: BottomInputView = {
+        let bottomInputView = BottomInputView()
+        bottomInputView.translatesAutoresizingMaskIntoConstraints = false
+        return bottomInputView
+    }()
+    
     private let keyboardManager = KeyboardManager()
     
-    private let bottomInputView = BottomInputView()
-
     private let imagePicker = ImagePicker()
-    
-    private let preferences: Preferences
+        
+    private var isNearBottom = false
     
     private var cancellables: Set<AnyCancellable> = []
+    
+    private let preferences: Preferences
+
 
     // MARK: - Initializers
     
-    init(preferences: Preferences) {
+    init(preferences: Preferences, messages: [String]) {
         self.preferences = preferences
+        self.messages = messages
         super.init(nibName: nil, bundle: nil)
+    }
+    
+    deinit {
+        removeObservers()
     }
     
     required init?(coder: NSCoder) {
@@ -46,72 +82,71 @@ final class ChatViewController: UIViewController {
     
     // MARK: - Lifecycle
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setColor(backgroud: .bg, hideLine: false)
+        navigationItem.setTitle(title: "Задание")
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: .closenav, target: self, action: #selector(close)
+        )
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .bg
         
         setupTVConstraints()
+        
+        setupCollectionViewConstraints()
+        
+        updateCollectionViewVisibility()
+        
         setupDelegates()
+        
+        setupBindings()
+        
         setupBottomInputView()
-            
-        preferences.$micPerission
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] newValue in
-                self?.bottomInputView.updateMicPermission(newValue)
-            }
-            .store(in: &cancellables)
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillShow),
-            name: UIResponder.keyboardWillShowNotification,
-            object: nil
-        )
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillHide),
-            name: UIResponder.keyboardWillHideNotification,
-            object: nil
-        )
         
         bottomInputView.textFieldBecomeFirstResponder()
-        
-    }
-    
-    @objc func keyboardWillHide(_ notification: Notification) {
-        adjustTableBottomInset(with: 0)
-    }
-    
-    @objc func keyboardWillShow(_ notification: Notification) {
-        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardRectangle = keyboardFrame.cgRectValue
-            let keyboardHeight = keyboardRectangle.height
-            adjustTableBottomInset(with: keyboardHeight)
-            tableView.scrollToRow(at: IndexPath(row: items - 1, section: 0), at: .bottom, animated: false)
+                
+        if !messages.isEmpty {
+            tableView.scrollToRow(at: IndexPath(row: messages.count - 1, section: 0), at: .bottom, animated: false)
         }
-    }
-    
-    private func adjustTableBottomInset(with keyboardHeight: CGFloat) {
-        let additionalInset: CGFloat = 0
-        tableView.contentInset.bottom = (bottomInputView.bottomViewHeight + additionalInset + keyboardHeight) - view.safeAreaInsets.bottom
-        tableView.verticalScrollIndicatorInsets.bottom = (bottomInputView.bottomViewHeight + additionalInset + keyboardHeight) - view.safeAreaInsets.bottom
-        
-    }
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setColor(backgroud: .bg, hideLine: false)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: .closenav, target: self, action: #selector(close)
-        )
     }
         
     // MARK: - Private methods
     
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
+           keyboardFrame.cgRectValue.height > bottomInputView.bottomViewHeight {
+            let keyboardHeight = keyboardFrame.cgRectValue.height
+            adjustTableBottomInset(with: keyboardHeight + bottomInputView.bottomViewHeight)
+            scrollToBottom()
+        }
+    }
+    
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        adjustTableBottomInset(with: bottomInputView.bottomViewHeight )
+        scrollToBottom()
+    }
+    
     @objc private func close() {
         dismiss(animated: true)
+    }
+    
+    private func adjustTableBottomInset(with keyboardHeight: CGFloat) {
+        let additionalInset: CGFloat = 0
+        tableView.contentInset.bottom = (additionalInset + keyboardHeight) - view.safeAreaInsets.bottom
+    }
+    
+    private func scrollToBottom() {
+        guard isNearBottom, !messages.isEmpty else { return }
+        tableView.scrollToRow(at: IndexPath(row: messages.count - 1, section: 0), at: .bottom, animated: false)
+    }
+    
+    private func updateCollectionViewVisibility() {
+        collectionView.isHidden = !messages.isEmpty
     }
 }
 
@@ -136,10 +171,12 @@ extension ChatViewController: ImagePickerDelegate {
 extension ChatViewController: BottomInputDelegate {
     
     func sendButtonAction(_ text: String?, _ image: UIImage?) {
-        print("sendButtonAction")
-        items += 1
+//        navigationItem.setTitle(title: "implemented", subtitle: "Loaded")
+        
+        messages.append(text ?? "")
+        updateCollectionViewVisibility()
         tableView.reloadData()
-        tableView.scrollToRow(at: IndexPath(row: items - 1, section: 0), at: .bottom, animated: false)
+        tableView.scrollToRow(at: IndexPath(row: messages.count - 1, section: 0), at: .bottom, animated: false)
     }
     
     func requestMicPermissionAction() {
@@ -174,24 +211,67 @@ extension ChatViewController: BottomInputDelegate {
 
 // MARK: - UITableViewDelegate / UITableViewDataSource
 
-extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
+extension ChatViewController: UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let scrollViewHeight = scrollView.frame.size.height
+
+        isNearBottom = offsetY >= contentHeight - scrollViewHeight - 20
+    }    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        items
+        messages.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell.textLabel?.text = "Row: \(indexPath.row)"
+        cell.textLabel?.text = messages[indexPath.item]
+        self.addInteraction(toCell: cell)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        bottomInputView.textField.text = "Row: \(indexPath.row)"
-        NotificationCenter.default.post(
-            name: UITextView.textDidChangeNotification,
-            object: bottomInputView.textField
-        )
+        bottomInputView.updateField("Row: \(indexPath.row)")
     }
+
+}
+
+// MARK: - UICollectionViewDataSource, UICollectionViewDelegate
+
+extension ChatViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
+        data.count
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: ChatPlaceholderCVCell.id,
+            for: indexPath
+        ) as? ChatPlaceholderCVCell else {
+            return UICollectionViewCell()
+        }
+        
+        let currentCell = data[indexPath.item]
+        cell.config(currentCell)
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedItem = data[indexPath.item]
+        bottomInputView.updateField(selectedItem.title)
+        print("Selected item: \(selectedItem.title)")
+    }
+
 }
 
 // MARK: - Constraints
@@ -208,6 +288,16 @@ private extension ChatViewController {
         ])
     }
     
+    private func setupCollectionViewConstraints() {
+        view.addSubview(collectionView)
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 84 + 61),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
+    }
+    
     private func setupBottomInputView() {
         view.addSubview(bottomInputView)
         keyboardManager.bind(inputAccessoryView: bottomInputView, withAdditionalBottomSpace: {
@@ -218,49 +308,95 @@ private extension ChatViewController {
     }
 }
 
-// MARK: - Setup delegates
+// MARK: - Delegates
 
 private extension ChatViewController {
     private func setupDelegates() {
         tableView.delegate = self
         tableView.dataSource = self
+        
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        
         bottomInputView.bottomInputDelegate = self
         imagePicker.delegate = self
+    
     }
 }
 
+//MARK: - Bindings
+
+private extension ChatViewController {
+    private func setupBindings() {
+        preferences.$micPerission
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newValue in
+                self?.bottomInputView.updateMicPermission(newValue)
+            }
+            .store(in: &cancellables)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+    }
+    
+    private func removeObservers() {
+        NotificationCenter.default.removeObserver(self)
+    }
+}
+
+// MARK: - UIContextMenuInteractionDelegate
+
+extension ChatViewController: UIContextMenuInteractionDelegate {
+    
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        configurationForMenuAtLocation location: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ -> UIMenu? in
+            let shareAction = UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up")) { _ in
+                // do whatever actions you want to perform...
+            }
+            let editAction = UIAction(title: "Edit", image: UIImage(systemName: "square.and.pencil")) { _ in
+                // do whatever actions you want to perform...
+            }
+            let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+                // do whatever actions you want to perform...
+            }
+            return UIMenu(title: "", children: [shareAction, editAction, deleteAction])
+        }
+    }
+    
+    private func addInteraction(toCell cell: UITableViewCell) {
+        let interaction = UIContextMenuInteraction(delegate: self)
+        cell.addInteraction(interaction)
+    }
+}
 
 
 #if DEBUG
 @available(iOS 17.0, *)
 #Preview {
     UINavigationController(
-        rootViewController: ChatViewController(preferences: .shared)
+        rootViewController: ChatViewController(
+            preferences: .shared, messages: []
+        )
     )
 }
 #endif
 
 
-protocol BottomInputDelegate: AnyObject {
-    func sendButtonAction(_ text: String?, _ image: UIImage?)
-    func requestMicPermissionAction()
-    func presentBottomSheetAction()
-    func addImageButtonAction()
-}
-
-enum SendButtonState {
-    case requestMicPermission      // нет текста + micPermission = false
-    case openBottomSheet           // нет текста + micPermission = true
-    case send                      // есть текст (micPermission неважен)
-    
-    var currentImage: UIImage {
-        switch self {
-        case .requestMicPermission: .voiceNotAvailable
-        case .openBottomSheet: .voice
-        case .send: .send
-        }
-    }
-}
 
 
 
@@ -279,7 +415,6 @@ final class BottomInputView: UIView {
         let view = UIView()
         view.backgroundColor = .textfield
         view.layer.cornerRadius = 14
-        view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -302,9 +437,10 @@ final class BottomInputView: UIView {
         return button
     }()
     
-    private lazy var addImageButton: UIButton = {
-        let button = UIButton()
+    private lazy var addImageButton: ButtonWithTouchSize = {
+        let button = ButtonWithTouchSize()
         button.setImage(.imgField, for: .normal)
+        button.touchAreaPadding = .init(top: 10, left: 10, bottom: 10, right: 10)
         button.addTarget(self, action: #selector(addImageButtonIsTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -329,6 +465,7 @@ final class BottomInputView: UIView {
         spacer.isUserInteractionEnabled = false
         spacer.setContentHuggingPriority(.fittingSizeLevel, for: .horizontal)
         spacer.setContentCompressionResistancePriority(.fittingSizeLevel, for: .horizontal)
+        spacer.translatesAutoresizingMaskIntoConstraints = false
         
         let stack = UIStackView(arrangedSubviews: [selectImageButton, spacer])
         stack.axis = .horizontal
@@ -368,6 +505,7 @@ final class BottomInputView: UIView {
         super.init(frame: frame)
         autoresizingMask = .flexibleHeight
         backgroundColor = .card
+    
         
         setupAddImageConstraints()
         
@@ -405,21 +543,21 @@ final class BottomInputView: UIView {
         super.layoutSubviews()
         let newHeight = bounds.height
         bottomViewHeight = newHeight
-        print(newHeight)
     }
     
     //MARK: - Private methods
     
     @objc private func sendButtonIsTapped() {
-        
+
         switch buttonState {
         case .requestMicPermission:
             bottomInputDelegate?.requestMicPermissionAction()
         case .openBottomSheet:
             bottomInputDelegate?.presentBottomSheetAction()
         case .send:
+            textFieldResignFirstResponder()
             bottomInputDelegate?.sendButtonAction(textField.text, selectedImage)
-            clearTextField()
+            updateField()
             removeSelectedImage()
         }
     }
@@ -429,7 +567,7 @@ final class BottomInputView: UIView {
     }
     
     @objc private func crossButtonIsTapped() {
-        clearTextField()
+        updateField()
     }
     
     @objc private func textDidChange(_ note: Notification) {
@@ -480,8 +618,8 @@ final class BottomInputView: UIView {
         }
     }
     
-    func clearTextField() {
-        textField.text = ""
+    func updateField(_ text: String = "") {
+        textField.text = text
         NotificationCenter.default.post(
             name: UITextView.textDidChangeNotification,
             object: textField
@@ -535,6 +673,7 @@ private extension BottomInputView {
             verticalStack.bottomAnchor.constraint(equalTo: flexibleBG.bottomAnchor, constant: -12),
             verticalStack.leadingAnchor.constraint(equalTo: flexibleBG.leadingAnchor, constant: 12),
             verticalStack.trailingAnchor.constraint(equalTo: flexibleBG.trailingAnchor, constant: -36),
+            
         ])
     }
     
@@ -577,4 +716,11 @@ private extension BottomInputView {
             devider.heightAnchor.constraint(equalToConstant: 0.5),
         ])
     }
+}
+
+
+
+struct MockData {
+    let image: UIImage = .write
+    let title: String
 }

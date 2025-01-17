@@ -18,7 +18,7 @@ final class MainRouter {
     func presentChatView() {
         let preferences = Preferences.shared
         
-        let chatViewController = ChatViewController(preferences: preferences)
+        let chatViewController = ChatViewController(preferences: preferences, messages: [])
         let navigationController = UINavigationController(rootViewController: chatViewController)
         navigationController.modalPresentationStyle = .overFullScreen
         viewController?.present(navigationController, animated: true)

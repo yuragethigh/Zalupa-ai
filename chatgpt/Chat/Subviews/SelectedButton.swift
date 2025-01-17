@@ -19,9 +19,18 @@ final class SelectedButton: UIButton {
 
     private let crossImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = .crossField
+        imageView.image = .closenav
+        imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
+    }()
+    
+    private let container: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.hex("#535353").withAlphaComponent(0.32)
+        view.layer.cornerRadius = 6
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
 
     //MARK: - Inits
@@ -44,17 +53,26 @@ final class SelectedButton: UIButton {
     private func setupConstraints() {
 
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: 60),
-            widthAnchor.constraint(equalToConstant: 60)
+            heightAnchor.constraint(equalToConstant: 64),
+            widthAnchor.constraint(equalToConstant: 64)
         ])
 
-        addSubview(crossImageView)
+        addSubview(container)
 
         NSLayoutConstraint.activate([
-            crossImageView.topAnchor.constraint(equalTo: topAnchor, constant: 4),
-            crossImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
-            crossImageView.widthAnchor.constraint(equalToConstant: 12),
-            crossImageView.heightAnchor.constraint(equalToConstant: 12)
+            container.topAnchor.constraint(equalTo: topAnchor, constant: 4),
+            container.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
+            container.widthAnchor.constraint(equalToConstant: 12),
+            container.heightAnchor.constraint(equalToConstant: 12)
+        ])
+        
+        container.addSubview(crossImageView)
+        
+        NSLayoutConstraint.activate([
+            crossImageView.widthAnchor.constraint(equalToConstant: 10),
+            crossImageView.heightAnchor.constraint(equalToConstant: 10),
+            crossImageView.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            crossImageView.centerYAnchor.constraint(equalTo: container.centerYAnchor),
         ])
     }
     

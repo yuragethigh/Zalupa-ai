@@ -139,7 +139,7 @@ private extension FlexibleTextView {
 @available(iOS 17.0, *)
 #Preview {
     UINavigationController(
-        rootViewController: ChatViewController(preferences: .shared)
+        rootViewController: ChatViewController(preferences: .shared, messages: [])
     )
 }
 #endif

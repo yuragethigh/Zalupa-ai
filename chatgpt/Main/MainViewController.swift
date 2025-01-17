@@ -11,7 +11,6 @@ import Combine
 
 final class MainViewController: UIViewController {
     // MARK: - Properties
-    @Published var isPremium: Bool = false
 
     private let viewModel: MainViewModel
     private let preferences: Preferences
@@ -84,6 +83,11 @@ final class MainViewController: UIViewController {
         navigationItem.rightBarButtonItem = setupRightBarButtom(
             isListMode: preferences.isListModeEnabled
         )
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: .account, target: self, action: #selector(test))
+    }
+    
+    @objc private func test() {
+        preferences.isPremiumEnabled.toggle()
     }
 
     // MARK: - Private Methods
@@ -107,28 +111,30 @@ final class MainViewController: UIViewController {
         preferences.isListModeEnabled ?
         
         ListModeStrategy(
-            assistans: viewModel.assistans,
+            assistans: viewModel.assistants[.list] ?? [],
+            isPremium: preferences.isPremiumEnabled,
             selectItemDelegate: self
         )
         
         :
         
         SectionModeStrategy(
-            assistans: viewModel.assistans,
+            assistans: viewModel.assistants[.pager] ?? [],
             historyChats: viewModel.historyChats,
-            isPremium: isPremium,
+            isPremium: preferences.isPremiumEnabled,
             selectItemDelegate: self
         )
     }
 
     private func setupBindings() {
         
-        viewModel.$assistans
+        viewModel.$assistants
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self else { return }
                 let section = IndexSet(integer: 0)
                 tableView.reloadSections(section, with: .fade)
+
             }.store(in: &cancellables)
         
         viewModel.$historyChats
@@ -139,17 +145,21 @@ final class MainViewController: UIViewController {
                 tableView.reloadSections(section, with: .fade)
             }.store(in: &cancellables)
         
-        $isPremium
+        preferences.$isPremiumEnabled
             .dropFirst()
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.tableView.reloadData()
+            .sink { [weak self] val in
+                guard let self else { return }
+                let section = IndexSet(integer: 0)
+                tableView.reloadSections(section, with: .fade)
             }.store(in: &cancellables)
 
         preferences.$isListModeEnabled
+            .dropFirst()
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.tableView.reloadData()
+            .sink { [weak self] value in
+                guard let self else { return }
+                tableView.reloadData()
             }.store(in: &cancellables)
     }
     
@@ -270,9 +280,13 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
 //MARK: - SelectItemDelegate
 
 extension MainViewController: SelectItemDelegate {
-    func collectionTableViewCell(didSelectItem model: AssistansConfiguration) {
+    func collectionTableViewCell(didSelectItem model: AssistantsConfiguration) {
         //TODO: handle selection cell
-        if !model.isPremium || isPremium {
+        
+//        preferences.isPremiumEnabled.toggle()
+//        print(model.name, model.backgroundColor)
+
+        if model.freeAssistant || preferences.isPremiumEnabled {
             router?.presentChatView()
             print("Selected item from collection: \(model)")
         } else {
@@ -282,7 +296,7 @@ extension MainViewController: SelectItemDelegate {
 }
 
 
-//MARK: - Setups table view
+//MARK: - Setup TV Constraints
 
 private extension MainViewController {
     

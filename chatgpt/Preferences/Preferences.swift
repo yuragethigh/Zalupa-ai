@@ -15,6 +15,7 @@ final class Preferences {
     @UserDefault(Preferences.Key.isPremiumEnabled) var isPremiumEnabled = false
     @UserDefault(Preferences.Key.isAuthorized) var isAuthorized = false
     @UserDefault(Preferences.Key.micPerission) var micPerission = false
+    @UserDefault(Preferences.Key.userEmail) var userEmail = "zalup0k@gmail.com"
 }
 
 private extension Preferences {
@@ -23,5 +24,6 @@ private extension Preferences {
         static let isPremiumEnabled = "isPremiumEnabled"
         static let isAuthorized = "isAuthorized"
         static let micPerission = "micPerission"
+        static let userEmail = "userEmail"
     }
 }

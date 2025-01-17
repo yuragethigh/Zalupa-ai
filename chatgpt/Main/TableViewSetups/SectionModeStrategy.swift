@@ -9,14 +9,14 @@ import UIKit
 
 final class SectionModeStrategy: TableDisplayStrategy {
     
-    private let assistans: [AssistansConfiguration]
+    private let assistans: [AssistantsConfiguration]
     private let historyChats: [HistoryChatConfiguration]
     private let isPremium: Bool
     
     weak var selectItemDelegate : SelectItemDelegate?
     
     init(
-        assistans: [AssistansConfiguration],
+        assistans: [AssistantsConfiguration],
         historyChats: [HistoryChatConfiguration],
         isPremium: Bool,
         selectItemDelegate : SelectItemDelegate

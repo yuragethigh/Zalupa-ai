@@ -50,6 +50,7 @@ final class BannerTVCell: UITableViewCell {
         let host = UIHostingController(rootView: view)
         insideView.addSubview(host.view)
         host.view.translatesAutoresizingMaskIntoConstraints = false
+        host.view.backgroundColor = .clear
         host.view.layer.cornerRadius = 16
         host.view.clipsToBounds = true
         

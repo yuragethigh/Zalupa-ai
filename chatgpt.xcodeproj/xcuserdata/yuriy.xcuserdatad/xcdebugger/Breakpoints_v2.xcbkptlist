@@ -3,4 +3,20 @@
    uuid = "594AF2BC-FB84-4222-816F-1CD44662D7A2"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.SymbolicBreakpoint">
+         <BreakpointContent
+            uuid = "2762F848-6BEB-4131-A85B-B3A457FB37E0"
+            shouldBeEnabled = "No"
+            nameForDebugger = "test"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            symbolName = "UIViewAlertForUnsatisfiableConstraints"
+            moduleName = "">
+            <Locations>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

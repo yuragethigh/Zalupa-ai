@@ -27,11 +27,14 @@ struct PremiumBannerView: View {
                     
                     Text(title)
                         .sfPro(.semibold, size: 17, color: .white)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.01)
                     
                     Image(.arrowrightA)
                         .renderingMode(.template)
                         .foregroundColor(.white)
                 }
+                .fixedSize()
                 
                 Text(subtitle)
                     .sfPro(.regular, size: 13, color: .white)

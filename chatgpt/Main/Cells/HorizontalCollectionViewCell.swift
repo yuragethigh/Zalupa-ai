@@ -12,11 +12,13 @@ final class HorizontalCollectionViewCell: UICollectionViewCell {
     
     static let id = String(describing: HorizontalCollectionViewCell.self)
     
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
+    private let animatedImageView: AnimatedImageView = {
+        let animatedImageView = AnimatedImageView()
+        animatedImageView.contentMode = .scaleAspectFit
+        animatedImageView.repeatCount = .once
+        animatedImageView.backgroundColor = .alert
+        animatedImageView.translatesAutoresizingMaskIntoConstraints = false
+        return animatedImageView
     }()
     
     private let blobsImage: UIImageView = {
@@ -44,12 +46,12 @@ final class HorizontalCollectionViewCell: UICollectionViewCell {
         contentView.backgroundColor = .none
         contentView.clipsToBounds = false
         
-        contentView.addSubview(imageView)
+        contentView.addSubview(animatedImageView)
         NSLayoutConstraint.activate([
-            imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -86 - 32),
-            imageView.heightAnchor.constraint(equalToConstant: 323),
-            imageView.widthAnchor.constraint(equalToConstant: 257)
+            animatedImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            animatedImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -86 - 32),
+            animatedImageView.heightAnchor.constraint(equalToConstant: 323),
+            animatedImageView.widthAnchor.constraint(equalToConstant: 257)
         ])
         
         contentView.addSubview(blobsImage)
@@ -68,6 +70,8 @@ final class HorizontalCollectionViewCell: UICollectionViewCell {
             textLabel.trailingAnchor.constraint(equalTo: blobsImage.trailingAnchor, constant: -10),
             textLabel.topAnchor.constraint(equalTo: blobsImage.topAnchor, constant: 24)
         ])
+        
+        
     }
     
     required init?(coder: NSCoder) {
@@ -76,20 +80,31 @@ final class HorizontalCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Public methods
     
-    func configure(imageUrl: URL?, description: String, isCentered: Bool) {
-        imageView.kf.setImage(with: imageUrl)
-        textLabel.text = description
-        UIView.animate(withDuration: 0.2) { [self] in
-            blobsImage.alpha = !isCentered ? 0 : 1
-            textLabel.alpha = !isCentered ? 0 : 1
-        }
+    func configure(assistant: AssistantsConfiguration, isCentered: Bool) {
+        
+        textLabel.text = assistant.description
+        blobsImage.alpha = !isCentered ? 0 : 1
+        textLabel.alpha = !isCentered ? 0 : 1
     }
     
-    func hide() {
+    func stopAnimation() {
+        animatedImageView.stopAnimating()
         UIView.animate(withDuration: 0.2) { [self] in
             blobsImage.alpha = 0
             textLabel.alpha = 0
         }
     }
+    
+    func startAnimation(with animation: URL?, isCentered: Bool) {
+        self.animatedImageView.stopAnimating()
+//        animatedImageView.kf.setImage(with: animation) { result in
+//            isCentered ? self.animatedImageView.startAnimating() : self.animatedImageView.stopAnimating()
+//        }
+//        UIView.animate(withDuration: 0.2) { [self] in
+            blobsImage.alpha = !isCentered ? 0 : 1
+            textLabel.alpha = !isCentered ? 0 : 1
+//        }
+    }
 }
+
 

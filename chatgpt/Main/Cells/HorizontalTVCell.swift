@@ -31,7 +31,7 @@ final class HorizontalTVCell: UITableViewCell {
     }()
     
     private let multiplier = 20
-    private var models: [AssistansConfiguration]
+    private var models: [AssistantsConfiguration] = []
     private var isPremium = false
     
     weak var delegate: SelectItemDelegate?
@@ -40,19 +40,20 @@ final class HorizontalTVCell: UITableViewCell {
         style: UITableViewCell.CellStyle,
         reuseIdentifier: String?
     ) {
-        self.models = []
-        super.init(
-            style: style,
-            reuseIdentifier: reuseIdentifier
-        )
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .clear
         setCollectionViewDelegate()
         setupConstraints()
     }
     
+    deinit {
+        stopAnimation()
+        print("Deinit")
+    }
+    
     //MARK: - Public methods
     
-    func configure(with items: [AssistansConfiguration], isPremium: Bool) {
+    func configure(with items: [AssistantsConfiguration], isPremium: Bool) {
         self.models = items
         self.isPremium = isPremium
         if !items.isEmpty {
@@ -69,7 +70,7 @@ final class HorizontalTVCell: UITableViewCell {
             self.collectionView.scrollToItem(at: middleIndexPath, at: .centeredHorizontally, animated: false)
             
             self.layoutIfNeeded()
-            self.updateVisibleCells()
+            self.updateCenteredCells()
         }
     }
     
@@ -128,13 +129,7 @@ extension HorizontalTVCell: UICollectionViewDataSource, UICollectionViewDelegate
         }
         let currentCell = models[indexPath.row % models.count]
         let isCentered = indexPath.item == currentCenteredIndex()
-        let currentImage = currentCell.isPremium ? currentCell.imageLocked : currentCell.imageDefault
-
-        cell.configure(
-            imageUrl: isPremium ? currentCell.imageDefault : currentImage,
-            description: currentCell.description,
-            isCentered: isCentered
-        )
+        cell.configure(assistant: currentCell, isCentered: isCentered)
         return cell
     }
 
@@ -152,7 +147,7 @@ extension HorizontalTVCell: UICollectionViewDataSource, UICollectionViewDelegate
             scrollView.contentOffset = CGPoint(x: middleOffset, y: scrollView.contentOffset.y)
         }
         
-        hideAllCells()
+        stopAnimation()
     }
     
     func scrollViewWillEndDragging(
@@ -175,46 +170,37 @@ extension HorizontalTVCell: UICollectionViewDataSource, UICollectionViewDelegate
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        updateVisibleCells()
-    }
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        hideAllCells()
+        updateCenteredCells()
     }
 
-    func scrollViewDidEndDragging(
-        _ scrollView: UIScrollView,
-        willDecelerate decelerate: Bool
-    ) {
-        if !decelerate {
-            updateVisibleCells()
-        }
-    }
+//    func scrollViewDidEndDragging(
+//        _ scrollView: UIScrollView,
+//        willDecelerate decelerate: Bool
+//    ) {
+//        if !decelerate {
+//            updateCenteredCells()
+//        }
+//    }
 
-    private func hideAllCells() {
+    private func stopAnimation() {
         for cell in collectionView.visibleCells {
             if let customCell = cell as? HorizontalCollectionViewCell {
-                customCell.hide()
+                customCell.stopAnimation()
             }
         }
     }
 
-    private func updateVisibleCells() {
+    private func updateCenteredCells() {
         guard let centeredIndex = currentCenteredIndex() else { return }
 
         for cell in collectionView.visibleCells {
             if let indexPath = collectionView.indexPath(for: cell),
-               let customCell = cell as? HorizontalCollectionViewCell {
+               let cell = cell as? HorizontalCollectionViewCell {
                 
                 let isCentered = indexPath.item % models.count == centeredIndex
                 let currentCell = models[indexPath.row % models.count]
-                let currentImage = currentCell.isPremium ? currentCell.imageLocked : currentCell.imageDefault
-               
-                customCell.configure(
-                    imageUrl: isPremium ? currentCell.imageDefault : currentImage,
-                    description:currentCell.description,
-                    isCentered: isCentered
-                )
+                
+                cell.startAnimation(with: currentCell.animation, isCentered: isCentered)
             }
         }
     }
@@ -235,3 +221,11 @@ extension HorizontalTVCell: UICollectionViewDataSource, UICollectionViewDelegate
         return closestIndexPath.item % models.count
     }
 }
+
+
+#if DEBUG
+@available(iOS 17.0, *)
+#Preview {
+    TabBarController()
+}
+#endif
