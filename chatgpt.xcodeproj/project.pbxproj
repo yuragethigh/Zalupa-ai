@@ -29,8 +29,10 @@
 		5B249B4F2D20B43D00BA27A7 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B249B4E2D20B43C00BA27A7 /* NetworkService.swift */; };
 		5B2A66952D2C6A45004D1761 /* FlexibleTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2A66942D2C6A43004D1761 /* FlexibleTextView.swift */; };
 		5B32A4DA2D3142C40059028B /* SelectedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B32A4D92D3142C20059028B /* SelectedButton.swift */; };
+		5B37E8882D3E6FC9003BFBF3 /* Voice_GPT.json in Resources */ = {isa = PBXBuildFile; fileRef = 5B37E8872D3E6FC9003BFBF3 /* Voice_GPT.json */; };
 		5B380C132D36BC5E00484167 /* CenteredFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B380C122D36BC5300484167 /* CenteredFlowLayout.swift */; };
 		5B465C442D2327A90028C0BE /* HistoryChatConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B465C432D2327A80028C0BE /* HistoryChatConfiguration.swift */; };
+		5B6A6FB32D3FD22200A94C32 /* UIStackView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6A6FB22D3FD21B00A94C32 /* UIStackView + Extension.swift */; };
 		5B6C77D62D26F5B000F64576 /* BannerTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6C77D52D26F5AE00F64576 /* BannerTVCell.swift */; };
 		5B6C77D82D26F6AE00F64576 /* PremiumBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6C77D72D26F6AC00F64576 /* PremiumBannerView.swift */; };
 		5B6C77DA2D26F6D500F64576 /* SettingsItemTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6C77D92D26F6D400F64576 /* SettingsItemTVCell.swift */; };
@@ -75,6 +77,12 @@
 		5BB3F62C2D1ED0220098C6DE /* UITableView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3F62B2D1ED01B0098C6DE /* UITableView + Extension.swift */; };
 		5BB3F62F2D1EE5E80098C6DE /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB3F62E2D1EE5BF0098C6DE /* ChatViewController.swift */; };
 		5BBDB4FB2D21FA4500A405B2 /* ChatHistoryTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBDB4FA2D21FA3E00A405B2 /* ChatHistoryTVCell.swift */; };
+		5BBF89E92D3E568C00EFBF43 /* VoiceInputService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBF89E82D3E568C00EFBF43 /* VoiceInputService.swift */; };
+		5BBF89EB2D3E59F800EFBF43 /* VoiceInputBSVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBF89EA2D3E59EC00EFBF43 /* VoiceInputBSVC.swift */; };
+		5BBF89EE2D3E632700EFBF43 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 5BBF89ED2D3E632700EFBF43 /* Lottie */; };
+		5BE390522D40DCFC00B5D6A2 /* MessageCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE390512D40DCFB00B5D6A2 /* MessageCVCell.swift */; };
+		5BE390542D40DD1B00B5D6A2 /* Date + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE390532D40DD1500B5D6A2 /* Date + Extension.swift */; };
+		5BE390562D41323400B5D6A2 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE390552D41322C00B5D6A2 /* HeaderView.swift */; };
 		5BE64CEB2D37CBEB00FEC419 /* SettingsSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64CEA2D37CBE700FEC419 /* SettingsSections.swift */; };
 		5BE64CED2D37CC5900FEC419 /* AdditionalTypesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64CEC2D37CC5200FEC419 /* AdditionalTypesSection.swift */; };
 		5BE64CEF2D37CD6100FEC419 /* AnotherAppsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64CEE2D37CD6000FEC419 /* AnotherAppsSection.swift */; };
@@ -96,6 +104,9 @@
 		5BEBAD182D37B17D00FDF4FA /* ChatPlaceholderCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEBAD172D37B17C00FDF4FA /* ChatPlaceholderCVCell.swift */; };
 		5BEE42352D3554D0009BFBEF /* BottomInputDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE42342D3554CF009BFBEF /* BottomInputDelegate.swift */; };
 		5BEE42372D3554E8009BFBEF /* SendButtonState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE42362D3554E7009BFBEF /* SendButtonState.swift */; };
+		5BF86C7F2D43B28F00FB8E16 /* LabelWithPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF86C7E2D43B28E00FB8E16 /* LabelWithPadding.swift */; };
+		5BF86C812D43C0AC00FB8E16 /* DaySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF86C802D43C0A500FB8E16 /* DaySection.swift */; };
+		5BF86C872D43C10E00FB8E16 /* MessageConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF86C862D43C10D00FB8E16 /* MessageConfiguration.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -120,9 +131,12 @@
 		5B249B4E2D20B43C00BA27A7 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		5B2A66942D2C6A43004D1761 /* FlexibleTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleTextView.swift; sourceTree = "<group>"; };
 		5B32A4D92D3142C20059028B /* SelectedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedButton.swift; sourceTree = "<group>"; };
+		5B37E8872D3E6FC9003BFBF3 /* Voice_GPT.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Voice_GPT.json; sourceTree = "<group>"; };
+		5B37E8892D3E7ADF003BFBF3 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		5B380C122D36BC5300484167 /* CenteredFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredFlowLayout.swift; sourceTree = "<group>"; };
 		5B465C432D2327A80028C0BE /* HistoryChatConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryChatConfiguration.swift; sourceTree = "<group>"; };
 		5B5D0AC02D1AA0380089FC7D /* chatgpt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chatgpt.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B6A6FB22D3FD21B00A94C32 /* UIStackView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView + Extension.swift"; sourceTree = "<group>"; };
 		5B6C77D52D26F5AE00F64576 /* BannerTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerTVCell.swift; sourceTree = "<group>"; };
 		5B6C77D72D26F6AC00F64576 /* PremiumBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumBannerView.swift; sourceTree = "<group>"; };
 		5B6C77D92D26F6D400F64576 /* SettingsItemTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItemTVCell.swift; sourceTree = "<group>"; };
@@ -168,6 +182,11 @@
 		5BB3F62B2D1ED01B0098C6DE /* UITableView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView + Extension.swift"; sourceTree = "<group>"; };
 		5BB3F62E2D1EE5BF0098C6DE /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		5BBDB4FA2D21FA3E00A405B2 /* ChatHistoryTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatHistoryTVCell.swift; sourceTree = "<group>"; };
+		5BBF89E82D3E568C00EFBF43 /* VoiceInputService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceInputService.swift; sourceTree = "<group>"; };
+		5BBF89EA2D3E59EC00EFBF43 /* VoiceInputBSVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceInputBSVC.swift; sourceTree = "<group>"; };
+		5BE390512D40DCFB00B5D6A2 /* MessageCVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCVCell.swift; sourceTree = "<group>"; };
+		5BE390532D40DD1500B5D6A2 /* Date + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date + Extension.swift"; sourceTree = "<group>"; };
+		5BE390552D41322C00B5D6A2 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		5BE64CEA2D37CBE700FEC419 /* SettingsSections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSections.swift; sourceTree = "<group>"; };
 		5BE64CEC2D37CC5200FEC419 /* AdditionalTypesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalTypesSection.swift; sourceTree = "<group>"; };
 		5BE64CEE2D37CD6000FEC419 /* AnotherAppsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnotherAppsSection.swift; sourceTree = "<group>"; };
@@ -189,6 +208,9 @@
 		5BEBAD172D37B17C00FDF4FA /* ChatPlaceholderCVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatPlaceholderCVCell.swift; sourceTree = "<group>"; };
 		5BEE42342D3554CF009BFBEF /* BottomInputDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomInputDelegate.swift; sourceTree = "<group>"; };
 		5BEE42362D3554E7009BFBEF /* SendButtonState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendButtonState.swift; sourceTree = "<group>"; };
+		5BF86C7E2D43B28E00FB8E16 /* LabelWithPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithPadding.swift; sourceTree = "<group>"; };
+		5BF86C802D43C0A500FB8E16 /* DaySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySection.swift; sourceTree = "<group>"; };
+		5BF86C862D43C10D00FB8E16 /* MessageConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageConfiguration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,6 +219,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B0EE4012D1D943500DF482D /* Kingfisher in Frameworks */,
+				5BBF89EE2D3E632700EFBF43 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,6 +239,8 @@
 		5B0EE40B2D1DA6EB00DF482D /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				5BE390532D40DD1500B5D6A2 /* Date + Extension.swift */,
+				5B6A6FB22D3FD21B00A94C32 /* UIStackView + Extension.swift */,
 				5BA81CF72D391D89000B8133 /* UIColor + Extension.swift */,
 				5BA81CF52D391988000B8133 /* UIView + Extension.swift */,
 				5BE64D1E2D37E5E300FEC419 /* Bundle + Extension.swift */,
@@ -285,11 +310,21 @@
 		5B2A66932D2C6A30004D1761 /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
+				5BE390552D41322C00B5D6A2 /* HeaderView.swift */,
+				5BBF89EA2D3E59EC00EFBF43 /* VoiceInputBSVC.swift */,
 				5B32A4D92D3142C20059028B /* SelectedButton.swift */,
 				5B04DDA72D301DED00A9A6E0 /* ImagePicker.swift */,
 				5B2A66942D2C6A43004D1761 /* FlexibleTextView.swift */,
 			);
 			path = Subviews;
+			sourceTree = "<group>";
+		};
+		5B37E8862D3E6FB6003BFBF3 /* Lottie */ = {
+			isa = PBXGroup;
+			children = (
+				5B37E8872D3E6FC9003BFBF3 /* Voice_GPT.json */,
+			);
+			path = Lottie;
 			sourceTree = "<group>";
 		};
 		5B5D0AB72D1AA0380089FC7D = {
@@ -396,6 +431,7 @@
 		5B9B37072D1ACFDF003EE1BE /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				5BF86C7E2D43B28E00FB8E16 /* LabelWithPadding.swift */,
 				5B921F782D380C3700986A4F /* BottomSheetControler */,
 				5BE64D1A2D37E44100FEC419 /* Deeplinks.swift */,
 				5B9B370C2D1AE74A003EE1BE /* UIViewGradient + Extension.swift */,
@@ -469,6 +505,7 @@
 		5BB3F6212D1EBDEA0098C6DE /* Resourses */ = {
 			isa = PBXGroup;
 			children = (
+				5B37E8862D3E6FB6003BFBF3 /* Lottie */,
 				5BB3F6222D1EBDFA0098C6DE /* SFProText */,
 			);
 			path = Resourses;
@@ -488,12 +525,15 @@
 		5BB3F62D2D1EE5AA0098C6DE /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				5BF86C852D43C10400FB8E16 /* Protocols */,
+				5BF86C832D43C0D800FB8E16 /* Models */,
 				5B2A66932D2C6A30004D1761 /* Subviews */,
 				5BEBAD162D37B17300FDF4FA /* Cells */,
 				5BEBAD192D37B1BE00FDF4FA /* FlowLayouts */,
 				5BEE42332D3554BB009BFBEF /* InputView */,
 				5B04DDA92D3026CA00A9A6E0 /* KeyboardManager.swift */,
 				5BB3F62E2D1EE5BF0098C6DE /* ChatViewController.swift */,
+				5BBF89E82D3E568C00EFBF43 /* VoiceInputService.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -541,6 +581,7 @@
 		5BEBAD162D37B17300FDF4FA /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				5BE390512D40DCFB00B5D6A2 /* MessageCVCell.swift */,
 				5BEBAD172D37B17C00FDF4FA /* ChatPlaceholderCVCell.swift */,
 			);
 			path = Cells;
@@ -563,6 +604,22 @@
 			path = InputView;
 			sourceTree = "<group>";
 		};
+		5BF86C832D43C0D800FB8E16 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5BF86C802D43C0A500FB8E16 /* DaySection.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		5BF86C852D43C10400FB8E16 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				5BF86C862D43C10D00FB8E16 /* MessageConfiguration.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -581,6 +638,7 @@
 			name = chatgpt;
 			packageProductDependencies = (
 				5B0EE4002D1D943500DF482D /* Kingfisher */,
+				5BBF89ED2D3E632700EFBF43 /* Lottie */,
 			);
 			productName = chatgpt;
 			productReference = 5B5D0AC02D1AA0380089FC7D /* chatgpt.app */;
@@ -602,16 +660,17 @@
 				};
 			};
 			buildConfigurationList = 5B5D0ABB2D1AA0380089FC7D /* Build configuration list for PBXProject "chatgpt" */;
-			developmentRegion = en;
+			developmentRegion = ru;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
+				ru,
 			);
 			mainGroup = 5B5D0AB72D1AA0380089FC7D;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				5B0EE3FF2D1D943500DF482D /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				5BBF89EC2D3E632700EFBF43 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5B5D0AC12D1AA0380089FC7D /* Products */;
@@ -632,6 +691,7 @@
 				5BB3F6242D1EBE0A0098C6DE /* SFProText-Bold.otf in Resources */,
 				5B9B36F32D1AAB2B003EE1BE /* Assets.xcassets in Resources */,
 				5BB3F6282D1EBE160098C6DE /* SFProText-Regular.otf in Resources */,
+				5B37E8882D3E6FC9003BFBF3 /* Voice_GPT.json in Resources */,
 				5BB3F62A2D1EBE1A0098C6DE /* SFProText-Semibold.otf in Resources */,
 				5B9B36F52D1AAB2B003EE1BE /* LaunchScreen.storyboard in Resources */,
 			);
@@ -644,16 +704,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5BE390562D41323400B5D6A2 /* HeaderView.swift in Sources */,
 				5B380C132D36BC5E00484167 /* CenteredFlowLayout.swift in Sources */,
 				5B0EE4082D1DA16A00DF482D /* Enpoints.swift in Sources */,
 				5BEBAD0A2D37A67D00FDF4FA /* UINavigationItem + Extension.swift in Sources */,
 				5BAE8D9A2D1FE03300FA8551 /* MainTVSection.swift in Sources */,
 				5BB3F62C2D1ED0220098C6DE /* UITableView + Extension.swift in Sources */,
+				5BE390522D40DCFC00B5D6A2 /* MessageCVCell.swift in Sources */,
 				5BE64D1B2D37E44200FEC419 /* Deeplinks.swift in Sources */,
+				5B6A6FB32D3FD22200A94C32 /* UIStackView + Extension.swift in Sources */,
 				5BE64D142D37D93F00FEC419 /* AnotherAppCellConfigurator.swift in Sources */,
 				5B04DDA82D301DF300A9A6E0 /* ImagePicker.swift in Sources */,
 				5B9B370B2D1AD197003EE1BE /* TabbarRouter.swift in Sources */,
 				5B2A66952D2C6A45004D1761 /* FlexibleTextView.swift in Sources */,
+				5BF86C872D43C10E00FB8E16 /* MessageConfiguration.swift in Sources */,
 				5BE64CF62D37CF8400FEC419 /* AnotherAppConfiguration.swift in Sources */,
 				5BAE8D982D1FE00F00FA8551 /* MainRouter.swift in Sources */,
 				5B04DDAA2D3026CA00A9A6E0 /* KeyboardManager.swift in Sources */,
@@ -665,6 +729,7 @@
 				5BB220DA2D1F095400AC48EA /* UIBarButtonItem + Extension.swift in Sources */,
 				5B32A4DA2D3142C40059028B /* SelectedButton.swift in Sources */,
 				5BE64D192D37E3E400FEC419 /* UIActivityViewController + Extension.swift in Sources */,
+				5BE390542D40DD1B00B5D6A2 /* Date + Extension.swift in Sources */,
 				5B9B36F62D1AAB2B003EE1BE /* AppDelegate.swift in Sources */,
 				5B249B4F2D20B43D00BA27A7 /* NetworkService.swift in Sources */,
 				5B9B37022D1AB5F5003EE1BE /* CustomButton.swift in Sources */,
@@ -682,14 +747,17 @@
 				5B6C77D62D26F5B000F64576 /* BannerTVCell.swift in Sources */,
 				5BE64CED2D37CC5900FEC419 /* AdditionalTypesSection.swift in Sources */,
 				5BB3F61C2D1EB5EB0098C6DE /* UINavigationController + Extension.swift in Sources */,
+				5BF86C7F2D43B28F00FB8E16 /* LabelWithPadding.swift in Sources */,
 				5BB3F61A2D1EAF2A0098C6DE /* ChatHistoryPlaceholderTVCell.swift in Sources */,
 				5B0EE4042D1D96DB00DF482D /* Network.swift in Sources */,
 				5B6C77D82D26F6AE00F64576 /* PremiumBannerView.swift in Sources */,
 				5BAD3C022D243E5B006AD192 /* SettingsViewController.swift in Sources */,
+				5BBF89E92D3E568C00EFBF43 /* VoiceInputService.swift in Sources */,
 				5BE64D162D37D96900FEC419 /* SettingsLocs.swift in Sources */,
 				5B6C77DF2D27224A00F64576 /* AnotherAppTVHeader.swift in Sources */,
 				5BA81CF62D39198D000B8133 /* UIView + Extension.swift in Sources */,
 				5B0EE4062D1DA14F00DF482D /* URLs.swift in Sources */,
+				5BBF89EB2D3E59F800EFBF43 /* VoiceInputBSVC.swift in Sources */,
 				5BAE8D9C2D201BDA00FA8551 /* UserDefaultsWrapper.swift in Sources */,
 				5BAD3C002D243E12006AD192 /* SettingsModuleFactory.swift in Sources */,
 				5BE64D122D37D92200FEC419 /* SettingsItemCellConfigurator.swift in Sources */,
@@ -703,6 +771,7 @@
 				5BBDB4FB2D21FA4500A405B2 /* ChatHistoryTVCell.swift in Sources */,
 				5BE64CEB2D37CBEB00FEC419 /* SettingsSections.swift in Sources */,
 				5B0EE4122D1DB68700DF482D /* AssistansConfiguration.swift in Sources */,
+				5BF86C812D43C0AC00FB8E16 /* DaySection.swift in Sources */,
 				5BE64CEF2D37CD6100FEC419 /* AnotherAppsSection.swift in Sources */,
 				5BE64CFD2D37CFFF00FEC419 /* AnotherAppItem.swift in Sources */,
 				5BAE8DA12D202DE800FA8551 /* ListModeTVCell.swift in Sources */,
@@ -736,6 +805,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				5B9B36ED2D1AAB2B003EE1BE /* Base */,
+				5B37E8892D3E7ADF003BFBF3 /* ru */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -755,11 +825,13 @@
 				INFOPLIST_FILE = chatgpt/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera needs";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Needs use a microphone";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Lib needs";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "App needs to use recognized text";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -769,9 +841,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.foresko.assistantsAI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -787,11 +863,13 @@
 				INFOPLIST_FILE = chatgpt/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera needs";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Needs use a microphone";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Lib needs";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "App needs to use recognized text";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -801,9 +879,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.foresko.assistantsAI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -812,6 +894,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -875,6 +958,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -958,6 +1042,14 @@
 				minimumVersion = 8.1.3;
 			};
 		};
+		5BBF89EC2D3E632700EFBF43 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -965,6 +1057,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5B0EE3FF2D1D943500DF482D /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		5BBF89ED2D3E632700EFBF43 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5BBF89EC2D3E632700EFBF43 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

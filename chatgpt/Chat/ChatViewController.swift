@@ -8,10 +8,52 @@
 import UIKit
 import Combine
 
+
+final class ChatPresenter {
+    weak var vc: ChatViewController?
+    
+    var sectionDays = [DaySection]()
+    
+    init() {
+        sectionDays.append(DaySection(date: Date().addingTimeInterval(-3 * 86400), messages: [
+            MessageModel(text: "Message 1 for 21st January", image: .test, messageType: .user)
+        ]))
+        
+        sectionDays.append(DaySection(date: Date().addingTimeInterval(-86400), messages: [
+            MessageModel(text: "Message 1 for yesterday", image: nil, messageType: .ai)
+        ]))
+    }
+    
+    let mockResponse = [
+        "Это", " первое", " предложение.",
+        " Вот", " второе", " предложение.",
+        " Здесь", " идёт", " третье", " предложение.",
+        " И наконец", " четвёртое", " предложение."
+    ]
+
+    
+    func updateLastMessage(with newText: String) {
+        guard
+            let vc = vc,
+            let lastDayIndex = sectionDays.indices.last,
+            let lastMessageIndex = sectionDays[lastDayIndex].messages.indices.last
+        else {
+            return
+        }
+        
+        sectionDays[lastDayIndex].messages[lastMessageIndex].text = (sectionDays[lastDayIndex].messages[lastMessageIndex].text ?? "") + newText
+        
+        vc.reloadItem(lastDayIndex: lastDayIndex, lastMessageIndex: lastMessageIndex)
+    }
+    
+    func configure(_ viewController: ChatViewController) {
+        self.vc = viewController
+    }
+}
+
 final class ChatViewController: UIViewController {
     
     // MARK: - Properties
-    var messages = [String]()
     
     @Published var data: [MockData] = [
         MockData(title: "Написать текст"),
@@ -21,35 +63,48 @@ final class ChatViewController: UIViewController {
         MockData(title: "Получить совет")
     ]
     
-    private let collectionView: UICollectionView = {
-        let layout = CenteredFlowLayout()
-        layout.minimumInteritemSpacing = 14
-        layout.minimumLineSpacing = 18
-        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = .clear
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.register(
-            ChatPlaceholderCVCell.self,
-            forCellWithReuseIdentifier: ChatPlaceholderCVCell.id
-        )
-        return cv
-    }()
+//    private let placeholderCV: UICollectionView = {
+//        let layout = CenteredFlowLayout()
+//        layout.minimumInteritemSpacing = 14
+//        layout.minimumLineSpacing = 18
+//        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+//        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+//        cv.backgroundColor = .clear
+//        cv.translatesAutoresizingMaskIntoConstraints = false
+//        cv.register(
+//            ChatPlaceholderCVCell.self,
+//            forCellWithReuseIdentifier: ChatPlaceholderCVCell.identifier
+//        )
+//        return cv
+//    }()
     
-    private let tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .plain)
-        tableView.separatorStyle = .none
-        tableView.backgroundColor = .clear
-        tableView.keyboardDismissMode = .interactive
-        tableView.contentInset.bottom = 70
-        tableView.showsVerticalScrollIndicator = false
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        return tableView
+    lazy var messageCV: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        layout.minimumLineSpacing = 20
+        layout.minimumInteritemSpacing = 0
+        layout.scrollDirection = .vertical
+        layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 0, right: 20)
+        layout.sectionHeadersPinToVisibleBounds = true
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+
+        collectionView.alwaysBounceVertical = true
+        collectionView.backgroundColor = .clear
+        collectionView.register(
+            MessageCVCell.self,
+            forCellWithReuseIdentifier: MessageCVCell.identifier
+        )
+        collectionView.register(
+            HeaderView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: HeaderView.identifier
+        )
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
     }()
     
     private let bottomInputView: BottomInputView = {
         let bottomInputView = BottomInputView()
-        bottomInputView.translatesAutoresizingMaskIntoConstraints = false
         return bottomInputView
     }()
     
@@ -62,13 +117,20 @@ final class ChatViewController: UIViewController {
     private var cancellables: Set<AnyCancellable> = []
     
     private let preferences: Preferences
+    
+    private let permissionVoiceInput: PermissionVoiceInput
+    
+    private let presenter = ChatPresenter()
 
 
     // MARK: - Initializers
     
-    init(preferences: Preferences, messages: [String]) {
+    init(
+        preferences: Preferences,
+        permissionVoiceInput: PermissionVoiceInput
+    ) {
         self.preferences = preferences
-        self.messages = messages
+        self.permissionVoiceInput = permissionVoiceInput
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -86,7 +148,6 @@ final class ChatViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setColor(backgroud: .bg, hideLine: false)
         navigationItem.setTitle(title: "Задание")
-
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: .closenav, target: self, action: #selector(close)
         )
@@ -95,12 +156,13 @@ final class ChatViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .bg
+        presenter.configure(self)
         
         setupTVConstraints()
         
-        setupCollectionViewConstraints()
+//        setupCollectionViewConstraints()
         
-        updateCollectionViewVisibility()
+//        updateCollectionViewVisibility()
         
         setupDelegates()
         
@@ -109,10 +171,8 @@ final class ChatViewController: UIViewController {
         setupBottomInputView()
         
         bottomInputView.textFieldBecomeFirstResponder()
-                
-        if !messages.isEmpty {
-            tableView.scrollToRow(at: IndexPath(row: messages.count - 1, section: 0), at: .bottom, animated: false)
-        }
+        
+        messageCV.reloadData()
     }
         
     // MARK: - Private methods
@@ -136,20 +196,44 @@ final class ChatViewController: UIViewController {
     }
     
     private func adjustTableBottomInset(with keyboardHeight: CGFloat) {
-        let additionalInset: CGFloat = 0
-        tableView.contentInset.bottom = (additionalInset + keyboardHeight) - view.safeAreaInsets.bottom
+        let additionalInset: CGFloat = 40
+        messageCV.contentInset.bottom = (additionalInset + keyboardHeight) - view.safeAreaInsets.bottom
     }
     
-    private func scrollToBottom() {
-        guard isNearBottom, !messages.isEmpty else { return }
-        tableView.scrollToRow(at: IndexPath(row: messages.count - 1, section: 0), at: .bottom, animated: false)
+//    private func updateCollectionViewVisibility() {
+//        placeholderCV.isHidden = !presenter.sectionDays.isEmpty
+//    }
+    
+    private func presentVoiceInputVC() {
+        let voiceInputService = VoiceInputService()
+        let vc = VoiceInputBSVC(voiceInputService: voiceInputService)
+        vc.preferredSheetSizing = .fit
+        vc.voiceInputDelegate = self
+        present(vc, animated: true)
     }
     
-    private func updateCollectionViewVisibility() {
-        collectionView.isHidden = !messages.isEmpty
+    private func alertVoicePermission() {
+        let alert = UIAlertController.create(
+            title: "Требуется доступ к Микрофону",
+            message: "Это нужно для того, чтобы специалисты понимали вас и могли отвечать.",
+            preferredStyle: .alert,
+            actions: (title: "Отмена", style: .cancel, handler: nil),
+            (title: "Настройки", style: .default, handler: { _ in
+                Deeplinks.open(type: .appSettings)
+            })
+        )
+        present(alert, animated: true)
     }
 }
 
+
+
+
+extension ChatViewController: VoiceInputDelegate {
+    func voiceInputDidFinish(_ text: String) {
+        bottomInputView.updateField(text)
+    }
+}
 
 
 // MARK: - ImagePickerDelegate
@@ -166,27 +250,118 @@ extension ChatViewController: ImagePickerDelegate {
     }
 }
 
+extension ChatViewController {
+    func insertItem(for message: MessageModel, scrollToBottom: Bool = false) {
+        let todayKey = getCurrentDateString()
+        
+        if let index = presenter.sectionDays.firstIndex(where: { getDateString(from: $0.date) == todayKey }) {
+            presenter.sectionDays[index].messages.append(message)
+            messageCV.performBatchUpdates( {
+                // Вставка элемента в массив с сообщениями если дата равна сегодняшней
+                let indexPath = IndexPath(row: presenter.sectionDays[index].messages.count - 1, section: index)
+                messageCV.insertItems(at: [indexPath])
+            }, completion: {_ in
+                guard scrollToBottom else { return }
+                
+                self.scrollToBottom()
+            })
+        } else {
+            // Вставка секции + сообщения
+            let newSection = DaySection(date: Date(), messages: [message])
+            presenter.sectionDays.append(newSection)
+            
+            messageCV.performBatchUpdates( {
+                let sectionIndex = presenter.sectionDays.count - 1
+                let indexPath = IndexSet(integer: sectionIndex)
+                self.messageCV.insertSections(indexPath)
+            }, completion: {_ in
+                guard scrollToBottom else { return }
+                
+                self.scrollToBottom()
+            })
+        }
+    }
+
+    
+    func scrollToBottom() {
+        guard isNearBottom,
+              let lastDayIndex = presenter.sectionDays.indices.last,
+              let lastMessageIndex = presenter.sectionDays[lastDayIndex].messages.indices.last
+        else { return }
+        let indexPath = IndexPath(item: lastMessageIndex, section: lastDayIndex)
+        messageCV.scrollToItem(at: indexPath, at: .bottom, animated: true)
+    }
+
+    func reloadItem(lastDayIndex: Int, lastMessageIndex: Int) {
+        let indexPath = IndexPath(item: lastMessageIndex , section: lastDayIndex)
+        messageCV.performBatchUpdates {
+            messageCV.reloadItems(at: [indexPath])
+        }
+    }
+    
+    func getCurrentDateString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .none
+        return dateFormatter.string(from: Date())
+    }
+    
+    func getDateString(from date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .none
+        return dateFormatter.string(from: date)
+    }
+}
+
 // MARK: - BottomInputDelegate
 
 extension ChatViewController: BottomInputDelegate {
+    func stopGenerateAction() {
+        bottomInputView.stopGenerate()
+    }
     
     func sendButtonAction(_ text: String?, _ image: UIImage?) {
-//        navigationItem.setTitle(title: "implemented", subtitle: "Loaded")
         
-        messages.append(text ?? "")
-        updateCollectionViewVisibility()
-        tableView.reloadData()
-        tableView.scrollToRow(at: IndexPath(row: messages.count - 1, section: 0), at: .bottom, animated: false)
+        let message = MessageModel(text: text, image: image, messageType: .user)
+        insertItem(for: message, scrollToBottom: true)
+//        updateCollectionViewVisibility()
+        mockResponse()
+    }
+    
+    func mockResponse() {
+        let message = MessageModel(text: "", image: nil, messageType: .ai)
+        insertItem(for: message, scrollToBottom: true)
+        
+        var delay: TimeInterval = 1
+        for sentencePart in presenter.mockResponse {
+           
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                print(sentencePart)
+                guard self.bottomInputView.generateIsActive else {
+                    return
+                }
+                self.presenter.updateLastMessage(with: sentencePart)
+            }
+            
+           
+            delay += 0.5
+        }
+        
     }
     
     func requestMicPermissionAction() {
-        print("requestMicPermissionAction")
-        preferences.micPerission = true
+        permissionVoiceInput.checkPermission { [weak self] isGranted in
+            guard let self else { return }
+            preferences.micPerission = isGranted
+            DispatchQueue.main.async {
+                isGranted ? self.presentVoiceInputVC() : self.alertVoicePermission()
+            }
+        }
     }
     
     func presentBottomSheetAction() {
-        print("presentBottomSheetAction")
-        preferences.micPerission = false
+        presentVoiceInputVC()
     }
     
     func addImageButtonAction() {
@@ -209,43 +384,20 @@ extension ChatViewController: BottomInputDelegate {
     }
 }
 
-// MARK: - UITableViewDelegate / UITableViewDataSource
 
-extension ChatViewController: UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offsetY = scrollView.contentOffset.y
-        let contentHeight = scrollView.contentSize.height
-        let scrollViewHeight = scrollView.frame.size.height
-
-        isNearBottom = offsetY >= contentHeight - scrollViewHeight - 20
-    }    
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        messages.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell.textLabel?.text = messages[indexPath.item]
-        self.addInteraction(toCell: cell)
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        bottomInputView.updateField("Row: \(indexPath.row)")
-    }
-
-}
 
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegate
 
-extension ChatViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension ChatViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return presenter.sectionDays.count
+    }
+    
     func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        data.count
+        presenter.sectionDays[section].messages.count
     }
     
     func collectionView(
@@ -254,24 +406,64 @@ extension ChatViewController: UICollectionViewDataSource, UICollectionViewDelega
     ) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: ChatPlaceholderCVCell.id,
+            withReuseIdentifier: MessageCVCell.identifier,
             for: indexPath
-        ) as? ChatPlaceholderCVCell else {
+        ) as? MessageCVCell else {
             return UICollectionViewCell()
         }
-        
-        let currentCell = data[indexPath.item]
-        cell.config(currentCell)
-        
+        let section = presenter.sectionDays[indexPath.section]
+        let message = section.messages[indexPath.item]
+        cell.configure(with: message)
+        addInteraction(toCell: cell.mainStackView)
         return cell
+        
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedItem = data[indexPath.item]
-        bottomInputView.updateField(selectedItem.title)
-        print("Selected item: \(selectedItem.title)")
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//       
+//            let selectedItem = data[indexPath.item]
+//            bottomInputView.updateField(selectedItem.title)
+//            print("Selected item: \(selectedItem.title)")
+//
+//    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
+        
+        guard let headerView = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: HeaderView.identifier,
+            for: indexPath
+        ) as? HeaderView else {
+            return UICollectionReusableView()
+        }
+        let currentDay = getCurrentDateString()
+        let section = presenter.sectionDays[indexPath.section]
+        let todayDateString = getDateString(from: section.date)
+        let returnedDay = currentDay == todayDateString ? "Сегодня" : todayDateString
+        headerView.titleLabel.text = returnedDay
+        return headerView
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
+        
+        return CGSize(width: collectionView.frame.width, height: 48)
     }
 
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let scrollViewHeight = scrollView.frame.size.height
+
+        isNearBottom = offsetY >= contentHeight - scrollViewHeight - 20
+    }
 }
 
 // MARK: - Constraints
@@ -279,32 +471,32 @@ extension ChatViewController: UICollectionViewDataSource, UICollectionViewDelega
 private extension ChatViewController {
     
     private func setupTVConstraints() {
-        view.addSubview(tableView)
+        view.addSubview(messageCV)
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            messageCV.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            messageCV.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            messageCV.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            messageCV.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
     
-    private func setupCollectionViewConstraints() {
-        view.addSubview(collectionView)
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 84 + 61),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-        ])
-    }
-    
+//    private func setupCollectionViewConstraints() {
+//        view.addSubview(placeholderCV)
+//        NSLayoutConstraint.activate([
+//            placeholderCV.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 84 + 61),
+//            placeholderCV.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//            placeholderCV.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//            placeholderCV.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+//        ])
+//    }
+//    
     private func setupBottomInputView() {
         view.addSubview(bottomInputView)
         keyboardManager.bind(inputAccessoryView: bottomInputView, withAdditionalBottomSpace: {
             return -self.view.safeAreaInsets.bottom
         })
         keyboardManager.bind(inputAccessoryView: bottomInputView)
-        keyboardManager.bind(to: tableView)
+        keyboardManager.bind(to: messageCV)
     }
 }
 
@@ -312,11 +504,11 @@ private extension ChatViewController {
 
 private extension ChatViewController {
     private func setupDelegates() {
-        tableView.delegate = self
-        tableView.dataSource = self
+        messageCV.delegate = self
+        messageCV.dataSource = self
         
-        collectionView.dataSource = self
-        collectionView.delegate = self
+//        placeholderCV.dataSource = self
+//        placeholderCV.delegate = self
         
         bottomInputView.bottomInputDelegate = self
         imagePicker.delegate = self
@@ -365,20 +557,27 @@ extension ChatViewController: UIContextMenuInteractionDelegate {
     ) -> UIContextMenuConfiguration? {
         
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ -> UIMenu? in
-            let shareAction = UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up")) { _ in
-                // do whatever actions you want to perform...
+            let shareAction = UIAction(
+                title: "Копировать",
+                image: .answer
+            ) { _ in
+                
             }
-            let editAction = UIAction(title: "Edit", image: UIImage(systemName: "square.and.pencil")) { _ in
-                // do whatever actions you want to perform...
+            let editAction = UIAction(
+                title: "Поделиться",
+                image: .share
+            ) { _ in
             }
-            let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-                // do whatever actions you want to perform...
+            let deleteAction = UIAction(
+                title: "Ответить",
+                image: .forward
+            ) { _ in
             }
             return UIMenu(title: "", children: [shareAction, editAction, deleteAction])
         }
     }
     
-    private func addInteraction(toCell cell: UITableViewCell) {
+    private func addInteraction(toCell cell: UIView) {
         let interaction = UIContextMenuInteraction(delegate: self)
         cell.addInteraction(interaction)
     }
@@ -390,7 +589,7 @@ extension ChatViewController: UIContextMenuInteractionDelegate {
 #Preview {
     UINavigationController(
         rootViewController: ChatViewController(
-            preferences: .shared, messages: []
+            preferences: .shared, permissionVoiceInput: PermissionVoiceInput()
         )
     )
 }
@@ -493,11 +692,11 @@ final class BottomInputView: UIView {
     }
     
     private var micPermission: Bool = false
+    var generateIsActive: Bool = false
     
     private var cancellables: Set<AnyCancellable> = []
     
-    @Published var buttonState: SendButtonState = .openBottomSheet
-
+    private var buttonState: SendButtonState = .openBottomSheet
     
     //MARK: - Initializers
     
@@ -505,7 +704,6 @@ final class BottomInputView: UIView {
         super.init(frame: frame)
         autoresizingMask = .flexibleHeight
         backgroundColor = .card
-    
         
         setupAddImageConstraints()
         
@@ -555,10 +753,13 @@ final class BottomInputView: UIView {
         case .openBottomSheet:
             bottomInputDelegate?.presentBottomSheetAction()
         case .send:
-            textFieldResignFirstResponder()
+            generateIsActive = true
             bottomInputDelegate?.sendButtonAction(textField.text, selectedImage)
             updateField()
             removeSelectedImage()
+            
+        case .stop:
+            bottomInputDelegate?.stopGenerateAction()
         }
     }
     
@@ -579,13 +780,18 @@ final class BottomInputView: UIView {
     }
     
     private func removeSelectedImage() {
+        selectedImage = nil
         verticalStack.removeArrangedSubview(horizontalStack)
         horizontalStack.removeFromSuperview()
-        selectedImage = nil
     }
     
     private func updateSendButtonState() {
-        if let text = textField.text, !text.isEmpty || selectedImage != nil {
+        if generateIsActive {
+            buttonState = .stop
+            sendButton.setImage(buttonState.currentImage, for: .normal)
+            textFieldDeleteButton.isHidden = generateIsActive
+            
+        } else if let text = textField.text, !text.isEmpty || selectedImage != nil {
             buttonState = .send
             textFieldDeleteButton.isHidden = text.isEmpty
             sendButton.setImage(buttonState.currentImage, for: .normal)
@@ -616,6 +822,11 @@ final class BottomInputView: UIView {
         if !verticalStack.arrangedSubviews.contains(horizontalStack) {
             verticalStack.insertArrangedSubview(horizontalStack, at: 0)
         }
+    }
+    
+    func stopGenerate() {
+        generateIsActive = false
+        updateSendButtonState()
     }
     
     func updateField(_ text: String = "") {

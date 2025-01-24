@@ -12,4 +12,5 @@ protocol BottomInputDelegate: AnyObject {
     func requestMicPermissionAction()
     func presentBottomSheetAction()
     func addImageButtonAction()
+    func stopGenerateAction()
 }

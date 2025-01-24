@@ -62,15 +62,15 @@ final class SelectedButton: UIButton {
         NSLayoutConstraint.activate([
             container.topAnchor.constraint(equalTo: topAnchor, constant: 4),
             container.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
-            container.widthAnchor.constraint(equalToConstant: 12),
-            container.heightAnchor.constraint(equalToConstant: 12)
+            container.widthAnchor.constraint(equalToConstant: 16),
+            container.heightAnchor.constraint(equalToConstant: 16)
         ])
         
         container.addSubview(crossImageView)
         
         NSLayoutConstraint.activate([
-            crossImageView.widthAnchor.constraint(equalToConstant: 10),
-            crossImageView.heightAnchor.constraint(equalToConstant: 10),
+            crossImageView.widthAnchor.constraint(equalToConstant: 12),
+            crossImageView.heightAnchor.constraint(equalToConstant: 12),
             crossImageView.centerXAnchor.constraint(equalTo: container.centerXAnchor),
             crossImageView.centerYAnchor.constraint(equalTo: container.centerYAnchor),
         ])

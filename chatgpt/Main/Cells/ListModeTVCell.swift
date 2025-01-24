@@ -147,6 +147,7 @@ final class ListModeTVCell: UITableViewCell {
         self.lockImage.isHidden = self.isPremium
         self.backgroundColors = item.backgroundColor
 
+        layoutIfNeeded()
     }
     
     required init?(coder: NSCoder) {
@@ -170,8 +171,9 @@ final class ListModeTVCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-
+        
         logoImageGradient.layer.sublayers?.removeAll(where: { $0 is CAGradientLayer })
+
 
         if let currentColors = currentColors {
             logoImageGradient.applyGradient(

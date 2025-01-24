@@ -53,7 +53,7 @@ extension UIBarButtonItem {
     
 }
 
-class ButtonWithTouchSize: UIButton {
+final class ButtonWithTouchSize: UIButton {
     
     var touchAreaPadding: UIEdgeInsets = .init(top: 8, left: 8, bottom: 8, right: 8)
     
@@ -64,7 +64,7 @@ class ButtonWithTouchSize: UIButton {
     }
 }
 
-private extension UIEdgeInsets {
+extension UIEdgeInsets {
     func inverted() -> Self {
         return .init(top: -top, left: -left, bottom: -bottom, right: -right)
     }

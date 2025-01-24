@@ -8,7 +8,7 @@
 import UIKit
 
 final class ChatPlaceholderCVCell: UICollectionViewCell {
-    static let id = String(describing: ChatPlaceholderCVCell.self)
+    static let identifier = String(describing: ChatPlaceholderCVCell.self)
     
     let cellImage: UIImageView = {
         let image = UIImageView()

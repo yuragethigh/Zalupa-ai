@@ -11,12 +11,14 @@ enum SendButtonState {
     case requestMicPermission      // нет текста + micPermission = false
     case openBottomSheet           // нет текста + micPermission = true
     case send                      // есть текст (micPermission неважен)
+    case stop
     
     var currentImage: UIImage {
         switch self {
         case .requestMicPermission: .voiceNotAvailable
         case .openBottomSheet: .voice
         case .send: .send
+        case .stop: .stop
         }
     }
 }
