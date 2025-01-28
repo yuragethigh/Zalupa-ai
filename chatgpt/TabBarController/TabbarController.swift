@@ -10,7 +10,7 @@ import UIKit
 final class TabBarController: UITabBarController {
     
     private lazy var tabbarRouter = TabbarRouter(viewController: self)
-    
+    private let tabbarViewModel = TabbarViewModel(networkService: Network())
     private var customTabBarView = UIView(frame: .zero)
     
     private lazy var customButton: UIButton = {
@@ -28,7 +28,7 @@ final class TabBarController: UITabBarController {
 
     private var customButtonBottomConstraint: NSLayoutConstraint?
 
-    // MARK:- View lifecycle
+    // MARK: - View lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,9 +57,10 @@ final class TabBarController: UITabBarController {
     }
 
     
-    // MARK:- Private methods
+    // MARK: - Private methods
     
     private func setupViewControllers() {
+        
         let mainViewController = MainModuleFactory.createModule()
         
         tabbarItemConfigure(
@@ -68,8 +69,6 @@ final class TabBarController: UITabBarController {
             image: UIImage.tab1,
             tag: 0
         )
-        
-        
 
         let settingsViewController = SettingsModuleFactory.createModule()
         
@@ -79,7 +78,6 @@ final class TabBarController: UITabBarController {
             image: UIImage.tab2,
             tag: 1
         )
-        
         
         self.viewControllers = [
             mainViewController,
@@ -107,7 +105,8 @@ final class TabBarController: UITabBarController {
     }
     
     @objc private func handleTabBarButtonTap() {
-        tabbarRouter.presentViewController()
+        guard let defaultAssistants = tabbarViewModel.defaultAssistants else { return }
+        tabbarRouter.presentViewController(defaultAssistants: defaultAssistants)
     }
     
     private func setupGradient() {

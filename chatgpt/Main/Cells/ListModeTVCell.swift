@@ -66,11 +66,19 @@ final class ListModeTVCell: UITableViewCell {
         return devider
     }()
     
+    private let blur: UIVisualEffectView = {
+        let blur = UIBlurEffect(style: .light)
+        let visEffect = UIVisualEffectView(effect: blur)
+        visEffect.layer.cornerRadius = 10
+        visEffect.clipsToBounds = true
+        visEffect.translatesAutoresizingMaskIntoConstraints = false
+        return visEffect
+    }()
+    
     private let lockImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = .lock
         imageView.contentMode = .scaleAspectFit
-        imageView.clipsToBounds = false
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -124,12 +132,18 @@ final class ListModeTVCell: UITableViewCell {
     }
     
     private func setupLockImageViewConstraints() {
-        logoImageView.addSubview(lockImage)
+        logoImageView.addSubview(blur)
         NSLayoutConstraint.activate([
-            lockImage.widthAnchor.constraint(equalToConstant: 20),
-            lockImage.heightAnchor.constraint(equalToConstant: 20),
-            lockImage.topAnchor.constraint(equalTo: logoImageView.topAnchor, constant: -3.5),
-            lockImage.trailingAnchor.constraint(equalTo: logoImageView.trailingAnchor, constant: 3.5),
+            blur.widthAnchor.constraint(equalToConstant: 20),
+            blur.heightAnchor.constraint(equalToConstant: 20),
+            blur.topAnchor.constraint(equalTo: logoImageView.topAnchor, constant: -3.5),
+            blur.trailingAnchor.constraint(equalTo: logoImageView.trailingAnchor, constant: 3.5),
+        ])
+        
+        blur.contentView.addSubview(lockImage)
+        NSLayoutConstraint.activate([
+            lockImage.centerXAnchor.constraint(equalTo: blur.centerXAnchor),
+            lockImage.centerYAnchor.constraint(equalTo: blur.centerYAnchor),
         ])
     }
     
@@ -145,6 +159,7 @@ final class ListModeTVCell: UITableViewCell {
         self.subtitleLabel.text = item.title
         self.isPremium = isPremium || item.freeAssistant
         self.lockImage.isHidden = self.isPremium
+        self.blur.isHidden = self.isPremium
         self.backgroundColors = item.backgroundColor
 
         layoutIfNeeded()

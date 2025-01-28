@@ -15,10 +15,16 @@ final class MainRouter {
         self.viewController = viewController
     }
     
-    func presentChatView() {
+    func presentChatView(selectedAssistans: AssistantsConfiguration) {
         let preferences = Preferences.shared
         let permissionVoiceInput = PermissionVoiceInput()
+        let presenter = ChatPresenter(
+            selectedAssistans: selectedAssistans,
+            chatQuery: ChatQuery(id: selectedAssistans.id, daySection: [])
+        )
+        
         let chatViewController = ChatViewController(
+            presenter: presenter,
             preferences: preferences,
             permissionVoiceInput: permissionVoiceInput
         )

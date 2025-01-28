@@ -6,32 +6,64 @@
 //
 
 import UIKit
+import Kingfisher
 
 extension UINavigationItem {
-    func setTitle(title:String, subtitle:String? = nil) {
-        
+    func setTitle(
+        title: String,
+        image: URL? = nil,
+        backgroundColors: AssistantsColors? = nil,
+        subtitle: String? = nil) {
+            
         let one = UILabel()
         one.text = title
-        one.font = UIFont.systemFont(ofSize: 17)
-        one.sizeToFit()
+        one.font = .SFProText(weight: .semibold, size: 17)
         
         let two = UILabel()
         two.text = subtitle
-        two.font = UIFont.systemFont(ofSize: 12)
+        two.textColor = .textSecondary
+        two.font = .SFProText(weight: .regular, size: 14)
         two.textAlignment = .center
-        two.sizeToFit()
-        
+
         let stackView = UIStackView(arrangedSubviews: [one, two])
         stackView.distribution = .equalCentering
         stackView.axis = .vertical
-        stackView.alignment = .center
+        stackView.alignment = .leading
         
-        let width = max(one.frame.size.width, two.frame.size.width)
-        stackView.frame = CGRect(x: 0, y: 0, width: width, height: 35)
         
-        one.sizeToFit()
-        two.sizeToFit()
+        let outerStackView = UIStackView(arrangedSubviews: [stackView])
+        outerStackView.axis = .horizontal
+        outerStackView.spacing = 10
+        outerStackView.alignment = .center
         
-        self.titleView = stackView
+        if let image = image {
+            
+            let gradientImageView = ScaledHeightImageView()
+            gradientImageView.contentMode = .scaleAspectFit
+            gradientImageView.clipsToBounds = true
+            
+            if let colors = backgroundColors {
+                gradientImageView.applyGradient(
+                    isVertical: true, colorArray: [
+                        UIColor.hex(colors.color1),
+                        UIColor.hex(colors.color2)
+                    ]
+                )
+            }
+            
+            gradientImageView.kf.setImage(with: image)
+            
+            gradientImageView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                gradientImageView.widthAnchor.constraint(equalToConstant: 30),
+                gradientImageView.heightAnchor.constraint(equalToConstant: 30)
+            ])
+            
+            outerStackView.insertArrangedSubview(gradientImageView, at: 0)
+        }
+        
+        self.titleView = outerStackView
     }
 }
+
+

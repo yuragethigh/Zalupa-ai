@@ -15,10 +15,16 @@ final class TabbarRouter {
         self.viewController = viewController
     }
     
-    func presentViewController() {
+    func presentViewController(defaultAssistants: AssistantsConfiguration) {
         let preferences = Preferences.shared
         let permissionVoiceInput = PermissionVoiceInput()
+        let presenter = ChatPresenter(
+            selectedAssistans: defaultAssistants,
+            chatQuery: mockData()
+        )
+        
         let chatViewController = ChatViewController(
+            presenter: presenter,
             preferences: preferences,
             permissionVoiceInput: permissionVoiceInput
         )

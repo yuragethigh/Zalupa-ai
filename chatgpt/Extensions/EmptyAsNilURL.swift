@@ -10,7 +10,11 @@ import Foundation
 @propertyWrapper
 struct EmptyAsNilURL: Decodable {
     var wrappedValue: URL?
-
+    
+    init(wrappedValueString: String) {
+        self.wrappedValue = URL(string: wrappedValueString)
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let string = try container.decode(String.self)

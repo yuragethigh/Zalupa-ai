@@ -25,8 +25,6 @@ final class MessageCVCell: UICollectionViewCell {
     private let spacerView: UIView = {
         let view = UIView()
         view.isUserInteractionEnabled = false
-//        view.setContentHuggingPriority(.required, for: .horizontal)
-//        view.setContentCompressionResistancePriority(.required, for: .horizontal)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -34,8 +32,6 @@ final class MessageCVCell: UICollectionViewCell {
     private let spacer2View: UIView = {
         let view = UIView()
         view.isUserInteractionEnabled = false
-//        view.setContentHuggingPriority(.required, for: .horizontal)
-//        view.setContentCompressionResistancePriority(.required, for: .horizontal)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -59,6 +55,15 @@ final class MessageCVCell: UICollectionViewCell {
         label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }()
+    
+    private let messageImageView: ScaledHeightImageView = {
+        let imageview = ScaledHeightImageView()
+        imageview.contentMode = .scaleAspectFit
+        imageview.layer.cornerRadius = 14
+        imageview.clipsToBounds = true
+        imageview.translatesAutoresizingMaskIntoConstraints = false
+        return imageview
     }()
     
     private let timeLabel: UILabel = {
@@ -91,8 +96,7 @@ final class MessageCVCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        contentView.backgroundColor = .clear
-        print("Max w - ", maxWidth)
+        contentView.backgroundColor = .red
         setupConstraints()
     }
     
@@ -103,12 +107,13 @@ final class MessageCVCell: UICollectionViewCell {
     override func preferredLayoutAttributesFitting(
         _ layoutAttributes: UICollectionViewLayoutAttributes
     ) -> UICollectionViewLayoutAttributes {
-        
+        setNeedsLayout()
         let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
         var newFrame = layoutAttributes.frame
         newFrame.size.height = ceil(size.height)
         newFrame.size.width = maxWidth
         layoutAttributes.frame = newFrame
+        
         return layoutAttributes
     }
     
@@ -118,7 +123,6 @@ final class MessageCVCell: UICollectionViewCell {
         messageLabel.text = nil
         timeLabel.text = nil
         messageImageView.image = nil
-        
         
         outerStackView.removeAllArrangedSubviews()
         timeStack.removeAllArrangedSubviews()
@@ -179,25 +183,10 @@ final class MessageCVCell: UICollectionViewCell {
         ])
     }
     
-    private let messageImageView: UIImageView = {
-       let imageview = UIImageView()
-//        imageview.contentMode = .center
-        imageview.backgroundColor = .red
-        imageview.layer.cornerRadius = 14
-        imageview.clipsToBounds = true
-        imageview.translatesAutoresizingMaskIntoConstraints = false
-        return imageview
-    }()
-
-    
     private func setupMessageImageView(message: MessageConfiguration) {
         guard let image = message.image else { return }
         messageImageView.image = image
         mainStackView.addArrangedSubview(messageImageView)
-        NSLayoutConstraint.activate([
-            messageImageView.widthAnchor.constraint(equalToConstant: 160),
-            messageImageView.heightAnchor.constraint(equalToConstant: 160)
-        ])
     }
     
     
@@ -221,42 +210,70 @@ final class MessageCVCell: UICollectionViewCell {
     }
 }
 
-struct ImageSUI: View {
-    let image: UIImage
-    var body: some View {
-        Image(uiImage: image)
-            .resizable()
-            .scaledToFit()
-            .clipped()
-    }
+
+#if DEBUG
+@available(iOS 17.0, *)
+#Preview {
+    UINavigationController(
+        rootViewController: ChatViewController(
+            
+            presenter: ChatPresenter(selectedAssistans: AssistansModel(
+                id: "ZAlupa",
+                title: "Копирайтер",
+                name: "Яна",
+                description: "Привет, я — Яна, копирайтер с опытом. Помогу написать грамотный и эффективный текст для тебя ✨",
+                imageAvatar: EmptyAsNilURL(wrappedValueString: "https://foresko-pureai.ams3.digitaloceanspaces.com/images/assistants/copywriter_avatar.png") ,
+                animation: EmptyAsNilURL(wrappedValueString: ""),
+                backgroundColor: AssistantsColors(color1: "#C2CAF4", color2: "#6558A5"),
+                freeAssistant: true,
+                systemMessage: "You are a girl copywriter named РЇРЅР°, you specialize in all aspects of copywriting. Your purpose is to help users craft engaging, creative, and effective written content tailored to their needs. Your response must be informal, high-quality and relevant. Always adapt your tone, style, and approach based on the user's requirements, the target audience, and the platform or medium for the content. If the user's message is not related to copywriting, respectfully act as though you don't know how to help, as your expertise is strictly limited to copywriting.",
+                clues: [
+                    Clues(
+                        clueTitle: "SEO-текст",
+                        clueDescription: "Объясни, как написать SEO-оптимизированный текст.",
+                        img: EmptyAsNilURL(wrappedValueString: "https://foresko-pureai.ams3.digitaloceanspaces.com/images/clue_icons/advice.png")
+                    ),
+                    Clues(
+                        clueTitle: "Продающий текст",
+                        clueDescription: "Расскажи, как написать цепляющий, продающий текст.",
+                        img: EmptyAsNilURL(wrappedValueString: "https://foresko-pureai.ams3.digitaloceanspaces.com/images/clue_icons/analyze.png")
+                    ),
+                    Clues(
+                        clueTitle: "УТП",
+                        clueDescription: "Сформулируй уникальное торговое предложение для",
+                        img: EmptyAsNilURL(wrappedValueString: "https://foresko-pureai.ams3.digitaloceanspaces.com/images/clue_icons/error.png")
+                    ),
+                    Clues(
+                        clueTitle: "Email-рассылка",
+                        clueDescription: "Создай текст для электронного письма о",
+                        img: EmptyAsNilURL(wrappedValueString: "https://foresko-pureai.ams3.digitaloceanspaces.com/images/clue_icons/feather.png")
+                    ),
+                ]
+            ), chatQuery: mockData()
+            ),
+            preferences: .shared,
+            permissionVoiceInput: PermissionVoiceInput()
+        )
+    )
 }
+#endif
 
+class ScaledHeightImageView: UIImageView {
 
-//#if DEBUG
-//@available(iOS 17.0, *)
-//#Preview {
-//    UINavigationController(
-//        rootViewController: TestVC()
-//    )
-//}
-//#endif
-extension UIImageView {
-    var contentClippingRect: CGRect {
-    guard let image = image else { return bounds }
-    guard contentMode == .scaleAspectFit else { return bounds }
-    guard image.size.width > 0 && image.size.height > 0 else { return bounds }
+    override var intrinsicContentSize: CGSize {
 
-    let scale: CGFloat
-    if image.size.width > image.size.height {
-        scale = bounds.width / image.size.width
-    } else {
-        scale = bounds.height / image.size.height
+        if let myImage = self.image {
+            let myImageWidth = myImage.size.width
+            let myImageHeight = myImage.size.height
+            let myViewWidth = UIScreen.main.bounds.size.width - 60
+            print(myViewWidth)
+            let ratio = myViewWidth/myImageWidth
+            let scaledHeight = myImageHeight * ratio
+            
+            return CGSize(width: myViewWidth, height: scaledHeight)
+        }
+        
+        return CGSize(width: -1.0, height: -1.0)
     }
 
-    let size = CGSize(width: image.size.width * scale, height: image.size.height * scale)
-    let x = (bounds.width - size.width) / 2.0
-    let y = (bounds.height - size.height) / 2.0
-    //print ("image resizing[width=\(size.width), height=\(size.height)")
-    return CGRect(x: x, y: y, width: size.width, height: size.height)
-    }
 }

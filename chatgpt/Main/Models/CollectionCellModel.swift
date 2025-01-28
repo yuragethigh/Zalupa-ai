@@ -8,7 +8,7 @@
 import Foundation
 
 struct AssistansModel: AssistantsConfiguration, Decodable {
-    
+    let id: String
     let title: String
     let name: String
     let description: String
@@ -18,6 +18,4 @@ struct AssistansModel: AssistantsConfiguration, Decodable {
     let freeAssistant: Bool
     let systemMessage: String
     let clues: [Clues]
-    
-    
 }

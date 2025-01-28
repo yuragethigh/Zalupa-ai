@@ -102,6 +102,11 @@
 		5BE64D1F2D37E5E800FEC419 /* Bundle + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64D1E2D37E5E300FEC419 /* Bundle + Extension.swift */; };
 		5BEBAD0A2D37A67D00FDF4FA /* UINavigationItem + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEBAD092D37A67500FDF4FA /* UINavigationItem + Extension.swift */; };
 		5BEBAD182D37B17D00FDF4FA /* ChatPlaceholderCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEBAD172D37B17C00FDF4FA /* ChatPlaceholderCVCell.swift */; };
+		5BEE34C42D47802B00AE106A /* ChatDisplayStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE34C32D47801800AE106A /* ChatDisplayStrategy.swift */; };
+		5BEE34C62D4790CA00AE106A /* TabbarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE34C52D4790C400AE106A /* TabbarViewModel.swift */; };
+		5BEE34C82D47A7A400AE106A /* PlaceholderCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE34C72D47A79E00AE106A /* PlaceholderCollectionView.swift */; };
+		5BEE34CB2D47C41F00AE106A /* TopBarNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE34CA2D47C40D00AE106A /* TopBarNotification.swift */; };
+		5BEE34CD2D47DA2E00AE106A /* CopyBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE34CC2D47DA1F00AE106A /* CopyBadge.swift */; };
 		5BEE42352D3554D0009BFBEF /* BottomInputDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE42342D3554CF009BFBEF /* BottomInputDelegate.swift */; };
 		5BEE42372D3554E8009BFBEF /* SendButtonState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE42362D3554E7009BFBEF /* SendButtonState.swift */; };
 		5BF86C7F2D43B28F00FB8E16 /* LabelWithPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF86C7E2D43B28E00FB8E16 /* LabelWithPadding.swift */; };
@@ -206,6 +211,11 @@
 		5BE64D1E2D37E5E300FEC419 /* Bundle + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle + Extension.swift"; sourceTree = "<group>"; };
 		5BEBAD092D37A67500FDF4FA /* UINavigationItem + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationItem + Extension.swift"; sourceTree = "<group>"; };
 		5BEBAD172D37B17C00FDF4FA /* ChatPlaceholderCVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatPlaceholderCVCell.swift; sourceTree = "<group>"; };
+		5BEE34C32D47801800AE106A /* ChatDisplayStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDisplayStrategy.swift; sourceTree = "<group>"; };
+		5BEE34C52D4790C400AE106A /* TabbarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarViewModel.swift; sourceTree = "<group>"; };
+		5BEE34C72D47A79E00AE106A /* PlaceholderCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderCollectionView.swift; sourceTree = "<group>"; };
+		5BEE34CA2D47C40D00AE106A /* TopBarNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBarNotification.swift; sourceTree = "<group>"; };
+		5BEE34CC2D47DA1F00AE106A /* CopyBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyBadge.swift; sourceTree = "<group>"; };
 		5BEE42342D3554CF009BFBEF /* BottomInputDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomInputDelegate.swift; sourceTree = "<group>"; };
 		5BEE42362D3554E7009BFBEF /* SendButtonState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendButtonState.swift; sourceTree = "<group>"; };
 		5BF86C7E2D43B28E00FB8E16 /* LabelWithPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithPadding.swift; sourceTree = "<group>"; };
@@ -310,6 +320,8 @@
 		5B2A66932D2C6A30004D1761 /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
+				5BEE34CA2D47C40D00AE106A /* TopBarNotification.swift */,
+				5BEE34C72D47A79E00AE106A /* PlaceholderCollectionView.swift */,
 				5BE390552D41322C00B5D6A2 /* HeaderView.swift */,
 				5BBF89EA2D3E59EC00EFBF43 /* VoiceInputBSVC.swift */,
 				5B32A4D92D3142C20059028B /* SelectedButton.swift */,
@@ -403,6 +415,7 @@
 		5B9B36FC2D1AB54C003EE1BE /* TabBarController */ = {
 			isa = PBXGroup;
 			children = (
+				5BEE34C52D4790C400AE106A /* TabbarViewModel.swift */,
 				5B9B370A2D1AD18D003EE1BE /* TabbarRouter.swift */,
 				5B9B36F02D1AAB2B003EE1BE /* TabbarController.swift */,
 				5B9B37042D1AC6DF003EE1BE /* Subview */,
@@ -431,6 +444,7 @@
 		5B9B37072D1ACFDF003EE1BE /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				5BEE34CC2D47DA1F00AE106A /* CopyBadge.swift */,
 				5BF86C7E2D43B28E00FB8E16 /* LabelWithPadding.swift */,
 				5B921F782D380C3700986A4F /* BottomSheetControler */,
 				5BE64D1A2D37E44100FEC419 /* Deeplinks.swift */,
@@ -615,6 +629,7 @@
 		5BF86C852D43C10400FB8E16 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				5BEE34C32D47801800AE106A /* ChatDisplayStrategy.swift */,
 				5BF86C862D43C10D00FB8E16 /* MessageConfiguration.swift */,
 			);
 			path = Protocols;
@@ -755,11 +770,13 @@
 				5BBF89E92D3E568C00EFBF43 /* VoiceInputService.swift in Sources */,
 				5BE64D162D37D96900FEC419 /* SettingsLocs.swift in Sources */,
 				5B6C77DF2D27224A00F64576 /* AnotherAppTVHeader.swift in Sources */,
+				5BEE34CB2D47C41F00AE106A /* TopBarNotification.swift in Sources */,
 				5BA81CF62D39198D000B8133 /* UIView + Extension.swift in Sources */,
 				5B0EE4062D1DA14F00DF482D /* URLs.swift in Sources */,
 				5BBF89EB2D3E59F800EFBF43 /* VoiceInputBSVC.swift in Sources */,
 				5BAE8D9C2D201BDA00FA8551 /* UserDefaultsWrapper.swift in Sources */,
 				5BAD3C002D243E12006AD192 /* SettingsModuleFactory.swift in Sources */,
+				5BEE34C82D47A7A400AE106A /* PlaceholderCollectionView.swift in Sources */,
 				5BE64D122D37D92200FEC419 /* SettingsItemCellConfigurator.swift in Sources */,
 				5B1479BA2D235156008AB063 /* UIViewController + Extension.swift in Sources */,
 				5BA53B602D21CEB000B58932 /* TableDisplayStrategy.swift in Sources */,
@@ -773,6 +790,7 @@
 				5B0EE4122D1DB68700DF482D /* AssistansConfiguration.swift in Sources */,
 				5BF86C812D43C0AC00FB8E16 /* DaySection.swift in Sources */,
 				5BE64CEF2D37CD6100FEC419 /* AnotherAppsSection.swift in Sources */,
+				5BEE34C42D47802B00AE106A /* ChatDisplayStrategy.swift in Sources */,
 				5BE64CFD2D37CFFF00FEC419 /* AnotherAppItem.swift in Sources */,
 				5BAE8DA12D202DE800FA8551 /* ListModeTVCell.swift in Sources */,
 				5B0EE40F2D1DB66000DF482D /* SelectItemDelegate.swift in Sources */,
@@ -785,6 +803,8 @@
 				5B0EE4172D1DB70900DF482D /* CollectionCellModel.swift in Sources */,
 				5B9B36F82D1AAB2B003EE1BE /* TabbarController.swift in Sources */,
 				5B9B36FE2D1AB568003EE1BE /* Tabbar + Extension.swift in Sources */,
+				5BEE34C62D4790CA00AE106A /* TabbarViewModel.swift in Sources */,
+				5BEE34CD2D47DA2E00AE106A /* CopyBadge.swift in Sources */,
 				5B6C77DA2D26F6D500F64576 /* SettingsItemTVCell.swift in Sources */,
 				5B9B37062D1AC75B003EE1BE /* SwiftUIView + extension.swift in Sources */,
 				5B0EE4202D1DBB5400DF482D /* CustomHorizontalFlowLayout.swift in Sources */,

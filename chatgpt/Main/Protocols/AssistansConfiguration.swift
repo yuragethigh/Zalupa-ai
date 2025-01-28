@@ -8,6 +8,7 @@
 import Foundation
 
 protocol AssistantsConfiguration {
+    var id: String { get }
     var title: String { get }
     var name: String { get }
     var description: String { get }

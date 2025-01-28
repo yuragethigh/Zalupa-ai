@@ -139,10 +139,45 @@ private extension FlexibleTextView {
 @available(iOS 17.0, *)
 #Preview {
     UINavigationController(
-        rootViewController: ChatViewController(preferences: .shared, permissionVoiceInput: PermissionVoiceInput()
-                                              )
+        rootViewController: ChatViewController(
+            
+            presenter: ChatPresenter(selectedAssistans: AssistansModel(
+                id: "ZAlupa",
+                title: "Копирайтер",
+                name: "Яна",
+                description: "Привет, я — Яна, копирайтер с опытом. Помогу написать грамотный и эффективный текст для тебя ✨",
+                imageAvatar: EmptyAsNilURL(wrappedValueString: "https://foresko-pureai.ams3.digitaloceanspaces.com/images/assistants/copywriter_avatar.png") ,
+                animation: EmptyAsNilURL(wrappedValueString: ""),
+                backgroundColor: AssistantsColors(color1: "#C2CAF4", color2: "#6558A5"),
+                freeAssistant: true,
+                systemMessage: "You are a girl copywriter named РЇРЅР°, you specialize in all aspects of copywriting. Your purpose is to help users craft engaging, creative, and effective written content tailored to their needs. Your response must be informal, high-quality and relevant. Always adapt your tone, style, and approach based on the user's requirements, the target audience, and the platform or medium for the content. If the user's message is not related to copywriting, respectfully act as though you don't know how to help, as your expertise is strictly limited to copywriting.",
+                clues: [
+                    Clues(
+                        clueTitle: "SEO-текст",
+                        clueDescription: "Объясни, как написать SEO-оптимизированный текст.",
+                        img: EmptyAsNilURL(wrappedValueString: "https://foresko-pureai.ams3.digitaloceanspaces.com/images/clue_icons/advice.png")
+                    ),
+                    Clues(
+                        clueTitle: "Продающий текст",
+                        clueDescription: "Расскажи, как написать цепляющий, продающий текст.",
+                        img: EmptyAsNilURL(wrappedValueString: "https://foresko-pureai.ams3.digitaloceanspaces.com/images/clue_icons/analyze.png")
+                    ),
+                    Clues(
+                        clueTitle: "УТП",
+                        clueDescription: "Сформулируй уникальное торговое предложение для",
+                        img: EmptyAsNilURL(wrappedValueString: "https://foresko-pureai.ams3.digitaloceanspaces.com/images/clue_icons/error.png")
+                    ),
+                    Clues(
+                        clueTitle: "Email-рассылка",
+                        clueDescription: "Создай текст для электронного письма о",
+                        img: EmptyAsNilURL(wrappedValueString: "https://foresko-pureai.ams3.digitaloceanspaces.com/images/clue_icons/feather.png")
+                    ),
+                ]
+            ), chatQuery: mockData()
+            ),
+            preferences: .shared,
+            permissionVoiceInput: PermissionVoiceInput()
+        )
     )
 }
 #endif
-
-

@@ -343,15 +343,9 @@ final class SupportBSVC: BottomSheetController {
         return cv
     }()
     
-    private let badgeLabel: UILabel = {
-        let label = UILabel()
+    private let badgeLabel: CopyBadge = {
+        let label = CopyBadge()
         label.text = "Адрес скопирован"
-        label.font = .SFProText(weight: .medium, size: 15)
-        label.textAlignment = .center
-        label.backgroundColor = .mainAccent
-        label.layer.cornerRadius = 18
-        label.clipsToBounds = true
-        label.alpha = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -469,21 +463,11 @@ extension SupportBSVC: UICollectionViewDelegate, UICollectionViewDataSource {
             
         case .mail:
             UIPasteboard.general.string = currentDomain
-            badgeLabelAnimate()
+            badgeLabel.animate()
         }
     }
-    
-    private func badgeLabelAnimate() {
-        UIView.animate(withDuration: 0.2, delay: 0, animations: {
-            self.badgeLabel.alpha = 1
-        }, completion: { _ in
-            UIView.animate(withDuration: 0.2, delay: 2, animations: {
-                self.badgeLabel.alpha = 0
-            }, completion: nil)
-        })
-    }
-    
 }
+
 
 extension SupportBSVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,

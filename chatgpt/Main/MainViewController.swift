@@ -282,12 +282,9 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
 extension MainViewController: SelectItemDelegate {
     func collectionTableViewCell(didSelectItem model: AssistantsConfiguration) {
         //TODO: handle selection cell
-        
-//        preferences.isPremiumEnabled.toggle()
-//        print(model.name, model.backgroundColor)
 
         if model.freeAssistant || preferences.isPremiumEnabled {
-            router?.presentChatView()
+            router?.presentChatView(selectedAssistans: model)
             print("Selected item from collection: \(model)")
         } else {
             //TODO: handle is not premium model

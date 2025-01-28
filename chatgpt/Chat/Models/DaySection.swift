@@ -7,6 +7,11 @@
 
 import UIKit
 
+struct ChatQuery {
+    var id: String
+    var daySection: [DaySection]
+}
+
 struct DaySection {
     let date: Date
     var messages: [MessageModel]

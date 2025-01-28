@@ -22,6 +22,7 @@ struct CustomTabButtonSUI: View {
             Image(.customTab)
         }
         .frame(width: 84, height: 84)
+        .edgesIgnoringSafeArea(.bottom)
     }
     
     private var firstGt: LinearGradient {

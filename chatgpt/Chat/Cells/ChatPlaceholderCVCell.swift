@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ChatPlaceholderCVCell: UICollectionViewCell {
     static let identifier = String(describing: ChatPlaceholderCVCell.self)
@@ -58,9 +59,9 @@ final class ChatPlaceholderCVCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func config(_ item: MockData) {
-        self.cellImage.image = item.image
-        self.cellLbl.text = item.title
+    func config(_ item: Clues) {
+        self.cellImage.kf.setImage(with: item.img)
+        self.cellLbl.text = item.clueTitle
     }
     
 }

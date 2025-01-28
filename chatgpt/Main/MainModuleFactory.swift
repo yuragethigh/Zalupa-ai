@@ -22,3 +22,4 @@ struct MainModuleFactory {
         return UINavigationController(rootViewController: mainViewController)
     }
 }
+

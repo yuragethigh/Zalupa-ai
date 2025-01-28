@@ -9,8 +9,7 @@ import UIKit
 
 extension UIActivityViewController {
     static func present(viewController: UIViewController, activityItems: [Any]) {
-        let textShare = activityItems
-        let activityViewController = UIActivityViewController(activityItems: textShare , applicationActivities: nil)
+        let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = viewController.view
         viewController.present(activityViewController, animated: true, completion: nil)
     }

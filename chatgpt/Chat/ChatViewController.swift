@@ -12,16 +12,13 @@ import Combine
 final class ChatPresenter {
     weak var vc: ChatViewController?
     
-    var sectionDays = [DaySection]()
+    var chatQuery: ChatQuery
+    var selectedAssistans: AssistantsConfiguration
     
-    init() {
-        sectionDays.append(DaySection(date: Date().addingTimeInterval(-3 * 86400), messages: [
-            MessageModel(text: "Message 1 for 21st January", image: .test, messageType: .user)
-        ]))
-        
-        sectionDays.append(DaySection(date: Date().addingTimeInterval(-86400), messages: [
-            MessageModel(text: "Message 1 for yesterday", image: nil, messageType: .ai)
-        ]))
+    init(selectedAssistans: AssistantsConfiguration, chatQuery: ChatQuery) {
+        self.selectedAssistans = selectedAssistans
+        self.chatQuery = chatQuery
+       
     }
     
     let mockResponse = [
@@ -35,13 +32,13 @@ final class ChatPresenter {
     func updateLastMessage(with newText: String) {
         guard
             let vc = vc,
-            let lastDayIndex = sectionDays.indices.last,
-            let lastMessageIndex = sectionDays[lastDayIndex].messages.indices.last
+            let lastDayIndex = chatQuery.daySection.indices.last,
+            let lastMessageIndex = chatQuery.daySection[lastDayIndex].messages.indices.last
         else {
             return
         }
         
-        sectionDays[lastDayIndex].messages[lastMessageIndex].text = (sectionDays[lastDayIndex].messages[lastMessageIndex].text ?? "") + newText
+        chatQuery.daySection[lastDayIndex].messages[lastMessageIndex].text = (chatQuery.daySection[lastDayIndex].messages[lastMessageIndex].text ?? "") + newText
         
         vc.reloadItem(lastDayIndex: lastDayIndex, lastMessageIndex: lastMessageIndex)
     }
@@ -51,32 +48,13 @@ final class ChatPresenter {
     }
 }
 
+
+
 final class ChatViewController: UIViewController {
     
     // MARK: - Properties
-    
-    @Published var data: [MockData] = [
-        MockData(title: "Написать текст"),
-        MockData(title: "Придумать"),
-        MockData(title: "Проанализировать"),
-        MockData(title: "Составить план"),
-        MockData(title: "Получить совет")
-    ]
-    
-//    private let placeholderCV: UICollectionView = {
-//        let layout = CenteredFlowLayout()
-//        layout.minimumInteritemSpacing = 14
-//        layout.minimumLineSpacing = 18
-//        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-//        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-//        cv.backgroundColor = .clear
-//        cv.translatesAutoresizingMaskIntoConstraints = false
-//        cv.register(
-//            ChatPlaceholderCVCell.self,
-//            forCellWithReuseIdentifier: ChatPlaceholderCVCell.identifier
-//        )
-//        return cv
-//    }()
+
+    private let placeholderCV = PlaceholderCollectionView()
     
     lazy var messageCV: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -87,9 +65,11 @@ final class ChatViewController: UIViewController {
         layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 0, right: 20)
         layout.sectionHeadersPinToVisibleBounds = true
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-
+        collectionView.contentInsetAdjustmentBehavior = .never
         collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = .clear
+        collectionView.contentInset.top = 61
+        collectionView.isPrefetchingEnabled = false
         collectionView.register(
             MessageCVCell.self,
             forCellWithReuseIdentifier: MessageCVCell.identifier
@@ -103,6 +83,12 @@ final class ChatViewController: UIViewController {
         return collectionView
     }()
     
+    private let copyBadge: CopyBadge = {
+        let view = CopyBadge()
+        view.text = "Текст скопирован"
+        return view
+    }()
+    
     private let bottomInputView: BottomInputView = {
         let bottomInputView = BottomInputView()
         return bottomInputView
@@ -111,6 +97,8 @@ final class ChatViewController: UIViewController {
     private let keyboardManager = KeyboardManager()
     
     private let imagePicker = ImagePicker()
+    
+    private let topBarNotificationView = TopBarNotification()
         
     private var isNearBottom = false
     
@@ -120,21 +108,25 @@ final class ChatViewController: UIViewController {
     
     private let permissionVoiceInput: PermissionVoiceInput
     
-    private let presenter = ChatPresenter()
-
+    private let presenter: ChatPresenter
+    
+    private var keyboardHeight: CGFloat = .zero
 
     // MARK: - Initializers
     
     init(
+        presenter: ChatPresenter,
         preferences: Preferences,
         permissionVoiceInput: PermissionVoiceInput
     ) {
+        self.presenter = presenter
         self.preferences = preferences
         self.permissionVoiceInput = permissionVoiceInput
         super.init(nibName: nil, bundle: nil)
     }
     
     deinit {
+        print("✅ deinit - ChatViewController")
         removeObservers()
     }
     
@@ -146,33 +138,45 @@ final class ChatViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setColor(backgroud: .bg, hideLine: false)
-        navigationItem.setTitle(title: "Задание")
+        navigationController?.setColor(backgroud: .bg, hideLine: true)
+        navigationItem.setTitle(
+            title: presenter.selectedAssistans.title,
+            image: presenter.selectedAssistans.imageAvatar,
+            backgroundColors: presenter.selectedAssistans.backgroundColor
+        )
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: .closenav, target: self, action: #selector(close)
         )
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: .settingsChat, target: self, action: #selector(rightBarButtonTapped))
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .bg
+        
         presenter.configure(self)
         
-        setupTVConstraints()
+        placeholderCV.configure(clues: presenter.selectedAssistans.clues)
         
-//        setupCollectionViewConstraints()
+        setupMessageCVConstraints()
         
-//        updateCollectionViewVisibility()
+        setupPlaceholderCVConstraints()
+        
+        setupBottomInputViewConstraints()
+        
+        setupNotificationBarConstraints()
+        
+        setupCopyBadgeConstraints()
+        
+        updateCollectionViewVisibility()
         
         setupDelegates()
         
         setupBindings()
         
-        setupBottomInputView()
-        
-        bottomInputView.textFieldBecomeFirstResponder()
-        
-        messageCV.reloadData()
+//        bottomInputView.textFieldBecomeFirstResponder()
+       
     }
         
     // MARK: - Private methods
@@ -181,28 +185,33 @@ final class ChatViewController: UIViewController {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
            keyboardFrame.cgRectValue.height > bottomInputView.bottomViewHeight {
             let keyboardHeight = keyboardFrame.cgRectValue.height
+            self.keyboardHeight = keyboardHeight
             adjustTableBottomInset(with: keyboardHeight + bottomInputView.bottomViewHeight)
             scrollToBottom()
         }
     }
     
     @objc private func keyboardWillHide(_ notification: Notification) {
-        adjustTableBottomInset(with: bottomInputView.bottomViewHeight )
-        scrollToBottom()
+        adjustTableBottomInset(with: bottomInputView.frame.height )
+        keyboardHeight = 0
     }
     
     @objc private func close() {
         dismiss(animated: true)
     }
     
-    private func adjustTableBottomInset(with keyboardHeight: CGFloat) {
-        let additionalInset: CGFloat = 40
-        messageCV.contentInset.bottom = (additionalInset + keyboardHeight) - view.safeAreaInsets.bottom
+    @objc private func rightBarButtonTapped() {
+        
     }
     
-//    private func updateCollectionViewVisibility() {
-//        placeholderCV.isHidden = !presenter.sectionDays.isEmpty
-//    }
+    private func adjustTableBottomInset(with keyboardHeight: CGFloat) {
+        let additionalInset: CGFloat = 40
+        messageCV.contentInset.bottom = (additionalInset + keyboardHeight)
+    }
+    
+    private func updateCollectionViewVisibility() {
+        placeholderCV.isHidden = !presenter.chatQuery.daySection.isEmpty
+    }
     
     private func presentVoiceInputVC() {
         let voiceInputService = VoiceInputService()
@@ -227,7 +236,11 @@ final class ChatViewController: UIViewController {
 }
 
 
-
+extension ChatViewController: ChatPlaceholderDelegate {
+    func didSelectItem(from item: Clues) {
+        bottomInputView.updateField(item.clueDescription)
+    }
+}
 
 extension ChatViewController: VoiceInputDelegate {
     func voiceInputDidFinish(_ text: String) {
@@ -254,11 +267,11 @@ extension ChatViewController {
     func insertItem(for message: MessageModel, scrollToBottom: Bool = false) {
         let todayKey = getCurrentDateString()
         
-        if let index = presenter.sectionDays.firstIndex(where: { getDateString(from: $0.date) == todayKey }) {
-            presenter.sectionDays[index].messages.append(message)
+        if let index = presenter.chatQuery.daySection.firstIndex(where: { getDateString(from: $0.date) == todayKey }) {
+            presenter.chatQuery.daySection[index].messages.append(message)
             messageCV.performBatchUpdates( {
                 // Вставка элемента в массив с сообщениями если дата равна сегодняшней
-                let indexPath = IndexPath(row: presenter.sectionDays[index].messages.count - 1, section: index)
+                let indexPath = IndexPath(row: presenter.chatQuery.daySection[index].messages.count - 1, section: index)
                 messageCV.insertItems(at: [indexPath])
             }, completion: {_ in
                 guard scrollToBottom else { return }
@@ -268,10 +281,10 @@ extension ChatViewController {
         } else {
             // Вставка секции + сообщения
             let newSection = DaySection(date: Date(), messages: [message])
-            presenter.sectionDays.append(newSection)
+            presenter.chatQuery.daySection.append(newSection)
             
             messageCV.performBatchUpdates( {
-                let sectionIndex = presenter.sectionDays.count - 1
+                let sectionIndex = presenter.chatQuery.daySection.count - 1
                 let indexPath = IndexSet(integer: sectionIndex)
                 self.messageCV.insertSections(indexPath)
             }, completion: {_ in
@@ -281,12 +294,21 @@ extension ChatViewController {
             })
         }
     }
+    
+    func load() {
+        guard
+              let lastDayIndex = presenter.chatQuery.daySection.indices.last,
+              let lastMessageIndex = presenter.chatQuery.daySection[lastDayIndex].messages.indices.last
+        else { return }
+        let indexPath = IndexPath(item: lastMessageIndex, section: lastDayIndex)
+        messageCV.scrollToItem(at: indexPath, at: .bottom, animated: false)
+    }
 
     
     func scrollToBottom() {
         guard isNearBottom,
-              let lastDayIndex = presenter.sectionDays.indices.last,
-              let lastMessageIndex = presenter.sectionDays[lastDayIndex].messages.indices.last
+              let lastDayIndex = presenter.chatQuery.daySection.indices.last,
+              let lastMessageIndex = presenter.chatQuery.daySection[lastDayIndex].messages.indices.last
         else { return }
         let indexPath = IndexPath(item: lastMessageIndex, section: lastDayIndex)
         messageCV.scrollToItem(at: indexPath, at: .bottom, animated: true)
@@ -294,10 +316,16 @@ extension ChatViewController {
 
     func reloadItem(lastDayIndex: Int, lastMessageIndex: Int) {
         let indexPath = IndexPath(item: lastMessageIndex , section: lastDayIndex)
-        messageCV.performBatchUpdates {
-            messageCV.reloadItems(at: [indexPath])
+        
+        UIView.performWithoutAnimation {
+            messageCV.performBatchUpdates({
+                messageCV.reloadItems(at: [indexPath])
+            }) { _ in
+                self.messageCV.collectionViewLayout.invalidateLayout()
+            }
         }
     }
+
     
     func getCurrentDateString() -> String {
         let dateFormatter = DateFormatter()
@@ -325,7 +353,7 @@ extension ChatViewController: BottomInputDelegate {
         
         let message = MessageModel(text: text, image: image, messageType: .user)
         insertItem(for: message, scrollToBottom: true)
-//        updateCollectionViewVisibility()
+        updateCollectionViewVisibility()
         mockResponse()
     }
     
@@ -337,14 +365,11 @@ extension ChatViewController: BottomInputDelegate {
         for sentencePart in presenter.mockResponse {
            
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                print(sentencePart)
                 guard self.bottomInputView.generateIsActive else {
                     return
                 }
                 self.presenter.updateLastMessage(with: sentencePart)
             }
-            
-           
             delay += 0.5
         }
         
@@ -390,14 +415,14 @@ extension ChatViewController: BottomInputDelegate {
 
 extension ChatViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return presenter.sectionDays.count
+        return presenter.chatQuery.daySection.count
     }
     
     func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        presenter.sectionDays[section].messages.count
+        presenter.chatQuery.daySection[section].messages.count
     }
     
     func collectionView(
@@ -411,21 +436,14 @@ extension ChatViewController: UICollectionViewDataSource, UICollectionViewDelega
         ) as? MessageCVCell else {
             return UICollectionViewCell()
         }
-        let section = presenter.sectionDays[indexPath.section]
+        let section = presenter.chatQuery.daySection[indexPath.section]
         let message = section.messages[indexPath.item]
         cell.configure(with: message)
-        addInteraction(toCell: cell.mainStackView)
         return cell
         
     }
     
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//       
-//            let selectedItem = data[indexPath.item]
-//            bottomInputView.updateField(selectedItem.title)
-//            print("Selected item: \(selectedItem.title)")
-//
-//    }
+    //MARK: - Header
     
     func collectionView(
         _ collectionView: UICollectionView,
@@ -441,7 +459,7 @@ extension ChatViewController: UICollectionViewDataSource, UICollectionViewDelega
             return UICollectionReusableView()
         }
         let currentDay = getCurrentDateString()
-        let section = presenter.sectionDays[indexPath.section]
+        let section = presenter.chatQuery.daySection[indexPath.section]
         let todayDateString = getDateString(from: section.date)
         let returnedDay = currentDay == todayDateString ? "Сегодня" : todayDateString
         headerView.titleLabel.text = returnedDay
@@ -463,6 +481,81 @@ extension ChatViewController: UICollectionViewDataSource, UICollectionViewDelega
         let scrollViewHeight = scrollView.frame.size.height
 
         isNearBottom = offsetY >= contentHeight - scrollViewHeight - 20
+        
+    }
+}
+
+// MARK: - UIContextMenuConfiguration
+
+extension ChatViewController {
+    func collectionView(_ collectionView: UICollectionView,
+                        contextMenuConfigurationForItemAt indexPath: IndexPath,
+                        point: CGPoint) -> UIContextMenuConfiguration? {
+        
+        let section = presenter.chatQuery.daySection[indexPath.section]
+        let message = section.messages[indexPath.item]
+
+        return UIContextMenuConfiguration(identifier: indexPath as NSCopying,
+                                          previewProvider: nil) { _ in
+            let shareAction = UIAction(
+                title: "Копировать",
+                image: .answer
+            ) { [weak self] _ in
+                UIPasteboard.general.string = message.text
+                self?.copyBadge.animate()
+            }
+            
+            let editAction = UIAction(
+                title: "Поделиться",
+                image: .share
+            ) { _ in
+                UIActivityViewController.present(
+                    viewController: self,
+                    activityItems: [message.text ?? "", message.image as Any]
+                )
+            }
+            
+            return UIMenu(title: "", children: [shareAction, editAction])
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard
+            let indexPath = configuration.identifier as? IndexPath,
+            let cell = collectionView.cellForItem(at: indexPath) as? MessageCVCell
+        else {
+            return nil
+        }
+        
+        bottomInputView.textFieldResignFirstResponder()
+        
+        let parameters = UIPreviewParameters()
+        parameters.backgroundColor = .clear
+        
+        let targetedPreview = UITargetedPreview(view: cell.mainStackView, parameters: parameters)
+        return targetedPreview
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard
+            let indexPath = configuration.identifier as? IndexPath,
+            let cell = collectionView.cellForItem(at: indexPath) as? MessageCVCell
+        else {
+            return nil
+        }
+        
+        bottomInputView.textFieldResignFirstResponder()
+        
+        let parameters = UIPreviewParameters()
+        parameters.backgroundColor = .clear
+        let targetedPreview = UITargetedPreview(view: cell.mainStackView, parameters: parameters)
+        return targetedPreview
     }
 }
 
@@ -470,7 +563,7 @@ extension ChatViewController: UICollectionViewDataSource, UICollectionViewDelega
 
 private extension ChatViewController {
     
-    private func setupTVConstraints() {
+    private func setupMessageCVConstraints() {
         view.addSubview(messageCV)
         NSLayoutConstraint.activate([
             messageCV.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -480,17 +573,17 @@ private extension ChatViewController {
         ])
     }
     
-//    private func setupCollectionViewConstraints() {
-//        view.addSubview(placeholderCV)
-//        NSLayoutConstraint.activate([
-//            placeholderCV.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 84 + 61),
-//            placeholderCV.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//            placeholderCV.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//            placeholderCV.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-//        ])
-//    }
-//    
-    private func setupBottomInputView() {
+    private func setupPlaceholderCVConstraints() {
+        view.addSubview(placeholderCV)
+        NSLayoutConstraint.activate([
+            placeholderCV.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 84 + 61),
+            placeholderCV.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 29),
+            placeholderCV.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -29),
+            placeholderCV.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
+    }
+    
+    private func setupBottomInputViewConstraints() {
         view.addSubview(bottomInputView)
         keyboardManager.bind(inputAccessoryView: bottomInputView, withAdditionalBottomSpace: {
             return -self.view.safeAreaInsets.bottom
@@ -498,21 +591,38 @@ private extension ChatViewController {
         keyboardManager.bind(inputAccessoryView: bottomInputView)
         keyboardManager.bind(to: messageCV)
     }
+    
+    private func setupNotificationBarConstraints() {
+        view.addSubview(topBarNotificationView)
+        NSLayoutConstraint.activate([
+            topBarNotificationView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            topBarNotificationView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            topBarNotificationView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+    
+    private func setupCopyBadgeConstraints() {
+        view.addSubview(copyBadge)
+        NSLayoutConstraint.activate([
+            copyBadge.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 14),
+            copyBadge.heightAnchor.constraint(equalToConstant: 36),
+            copyBadge.widthAnchor.constraint(equalToConstant: 168),
+            copyBadge.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+    }
 }
 
 // MARK: - Delegates
 
-private extension ChatViewController {
-    private func setupDelegates() {
+extension ChatViewController {
+    
+    func setupDelegates() {
         messageCV.delegate = self
         messageCV.dataSource = self
         
-//        placeholderCV.dataSource = self
-//        placeholderCV.delegate = self
-        
         bottomInputView.bottomInputDelegate = self
         imagePicker.delegate = self
-    
+        placeholderCV.chatPlaceholderDelegate = self
     }
 }
 
@@ -520,6 +630,15 @@ private extension ChatViewController {
 
 private extension ChatViewController {
     private func setupBindings() {
+        bottomInputView.$bottomViewHeight
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newValue in
+                guard let self else { return }
+                adjustTableBottomInset(with: newValue + keyboardHeight)
+//                scrollToBottom()
+            }
+            .store(in: &cancellables)
+        
         preferences.$micPerission
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newValue in
@@ -547,41 +666,6 @@ private extension ChatViewController {
     }
 }
 
-// MARK: - UIContextMenuInteractionDelegate
-
-extension ChatViewController: UIContextMenuInteractionDelegate {
-    
-    func contextMenuInteraction(
-        _ interaction: UIContextMenuInteraction,
-        configurationForMenuAtLocation location: CGPoint
-    ) -> UIContextMenuConfiguration? {
-        
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ -> UIMenu? in
-            let shareAction = UIAction(
-                title: "Копировать",
-                image: .answer
-            ) { _ in
-                
-            }
-            let editAction = UIAction(
-                title: "Поделиться",
-                image: .share
-            ) { _ in
-            }
-            let deleteAction = UIAction(
-                title: "Ответить",
-                image: .forward
-            ) { _ in
-            }
-            return UIMenu(title: "", children: [shareAction, editAction, deleteAction])
-        }
-    }
-    
-    private func addInteraction(toCell cell: UIView) {
-        let interaction = UIContextMenuInteraction(delegate: self)
-        cell.addInteraction(interaction)
-    }
-}
 
 
 #if DEBUG
@@ -589,13 +673,81 @@ extension ChatViewController: UIContextMenuInteractionDelegate {
 #Preview {
     UINavigationController(
         rootViewController: ChatViewController(
-            preferences: .shared, permissionVoiceInput: PermissionVoiceInput()
+            
+            presenter: ChatPresenter(selectedAssistans: AssistansModel(
+                id: "ZAlupa",
+                title: "Копирайтер",
+                name: "Яна",
+                description: "Привет, я — Яна, копирайтер с опытом. Помогу написать грамотный и эффективный текст для тебя ✨",
+                imageAvatar: EmptyAsNilURL(wrappedValueString: "https://foresko-pureai.ams3.digitaloceanspaces.com/images/assistants/copywriter_avatar.png") ,
+                animation: EmptyAsNilURL(wrappedValueString: ""),
+                backgroundColor: AssistantsColors(color1: "#C2CAF4", color2: "#6558A5"),
+                freeAssistant: true,
+                systemMessage: "You are a girl copywriter named РЇРЅР°, you specialize in all aspects of copywriting. Your purpose is to help users craft engaging, creative, and effective written content tailored to their needs. Your response must be informal, high-quality and relevant. Always adapt your tone, style, and approach based on the user's requirements, the target audience, and the platform or medium for the content. If the user's message is not related to copywriting, respectfully act as though you don't know how to help, as your expertise is strictly limited to copywriting.",
+                clues: [
+                    Clues(
+                        clueTitle: "SEO-текст",
+                        clueDescription: "Объясни, как написать SEO-оптимизированный текст.",
+                        img: EmptyAsNilURL(wrappedValueString: "https://foresko-pureai.ams3.digitaloceanspaces.com/images/clue_icons/advice.png")
+                    ),
+                    Clues(
+                        clueTitle: "Продающий текст",
+                        clueDescription: "Расскажи, как написать цепляющий, продающий текст.",
+                        img: EmptyAsNilURL(wrappedValueString: "https://foresko-pureai.ams3.digitaloceanspaces.com/images/clue_icons/analyze.png")
+                    ),
+                    Clues(
+                        clueTitle: "УТП",
+                        clueDescription: "Сформулируй уникальное торговое предложение для",
+                        img: EmptyAsNilURL(wrappedValueString: "https://foresko-pureai.ams3.digitaloceanspaces.com/images/clue_icons/error.png")
+                    ),
+                    Clues(
+                        clueTitle: "Email-рассылка",
+                        clueDescription: "Создай текст для электронного письма о",
+                        img: EmptyAsNilURL(wrappedValueString: "https://foresko-pureai.ams3.digitaloceanspaces.com/images/clue_icons/feather.png")
+                    ),
+                ]
+            ), chatQuery: mockData()
+            ),
+            preferences: .shared,
+            permissionVoiceInput: PermissionVoiceInput()
         )
     )
 }
 #endif
 
 
+func mockData() -> ChatQuery {
+
+    return ChatQuery(
+        id: "ZALUPA",
+        daySection: [
+            DaySection(
+                date: Date().addingTimeInterval(-3 * 86400),
+                messages: [
+                    MessageModel(text: "MOCK - \nMessage 1", image: .test, messageType: .user),
+                    MessageModel(text: "MOCK - \nMessage 2", image: nil, messageType: .ai)
+                ]
+            ),
+            DaySection(
+                date: Date().addingTimeInterval(-86400),
+                messages: [
+                    MessageModel(text: "MOCK - \nMessage 3", image: nil, messageType: .ai),
+                    MessageModel(text: "MOCK - \nMessage 3", image: nil, messageType: .user),
+                    MessageModel(text: "MOCK - \nMessage 3", image: nil, messageType: .ai),
+                    MessageModel(text: "MOCK - \nMessage 3", image: nil, messageType: .user),
+                    MessageModel(text: "MOCK - \nMessage 3", image: nil, messageType: .ai),
+                    MessageModel(text: "MOCK - \nMessage 3", image: nil, messageType: .user),
+                    MessageModel(text: "MOCK - \nMessage 3", image: nil, messageType: .ai),
+                    MessageModel(text: "MOCK - \nMessage 3", image: nil, messageType: .user),
+                    MessageModel(text: "MOCK - \nMessage 3", image: nil, messageType: .ai),
+                    MessageModel(text: "MOCK - \nMessage 3", image: nil, messageType: .user),
+                    MessageModel(text: "MOCK - \nMessage 3", image: nil, messageType: .ai),
+                    MessageModel(text: "MOCK - \nMessage 3", image: nil, messageType: .user),
+                ]
+            ),
+        ]
+    )
+}
 
 
 
@@ -735,7 +887,7 @@ final class BottomInputView: UIView {
         return .zero
     }
     
-    var bottomViewHeight: CGFloat = .zero
+    @Published var bottomViewHeight: CGFloat = .zero
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -929,9 +1081,3 @@ private extension BottomInputView {
     }
 }
 
-
-
-struct MockData {
-    let image: UIImage = .write
-    let title: String
-}
